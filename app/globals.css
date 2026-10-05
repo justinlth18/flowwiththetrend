@@ -610,6 +610,11 @@ button, input, select, textarea { font: inherit; }
   pointer-events: none;
 }
 .inner-nav .nav-link { border: 0; background: transparent; }
+.inner-nav .nav-link.is-active,
+.inner-nav .nav-link.is-active:hover {
+  background: transparent;
+  color: var(--pink);
+}
 .page-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(220px, 0.72fr); gap: 12px; }
 .stack { display: grid; gap: 12px; }
 .sheet .sticker, .band-intro .sticker, .closing .sticker { text-align: left; }
@@ -948,10 +953,14 @@ button, input, select, textarea { font: inherit; }
     text-align: left;
     padding-right: 12px;
   }
-  .menu-card .nav-link.is-active,
-  .inner-nav-panel .nav-link.is-active {
+  .menu-card .nav-link.is-active {
     background: var(--ink);
     color: var(--yellow);
+    border-color: var(--ink);
+  }
+  .inner-nav-panel .nav-link.is-active {
+    background: var(--ink);
+    color: var(--pink);
     border-color: var(--ink);
   }
   .hero, .feature { min-height: 0; }

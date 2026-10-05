@@ -23,19 +23,44 @@ function Frame({
 
 function VibrantMock() {
   return (
-    <Frame domain="ada.example" className="mock-vibrant">
+    <Frame domain="adacho.example" className="mock-vibrant">
       <div className="mv-vibrant">
-        <aside>ADA</aside>
-        <div className="mv-vibrant-main">
-          <p>chef portfolio · 2026</p>
-          <strong>ada cho</strong>
-          <em>plates, pop-ups, the diary</em>
+        <header>
+          <b>Ada Cho</b>
+          <nav>
+            <span>Plates</span>
+            <span>Pop-ups</span>
+            <span>Diary</span>
+          </nav>
+        </header>
+        <div className="mv-hero">
           <div>
-            <span>plates</span>
-            <span>pop-ups</span>
-            <span>diary</span>
+            <p>Chef portfolio</p>
+            <strong>Plates with the volume up.</strong>
+            <em>Selected menus, pop-ups, and the diary from the pass.</em>
           </div>
+          <figure>
+            <span className="shot shot-plate" />
+            <figcaption>Citrus, olive oil · 2026</figcaption>
+          </figure>
         </div>
+        <ul>
+          <li>
+            <span className="shot shot-night" />
+            <b>Night market</b>
+            <small>Three nights in Kampong Glam</small>
+          </li>
+          <li>
+            <span className="shot shot-bowl" />
+            <b>The red room</b>
+            <small>Private dining, twelve seats</small>
+          </li>
+          <li>
+            <span className="shot shot-citrus" />
+            <b>Sunday diary</b>
+            <small>What left the pass</small>
+          </li>
+        </ul>
       </div>
     </Frame>
   );
@@ -43,26 +68,41 @@ function VibrantMock() {
 
 function KineticMock() {
   return (
-    <Frame domain="rio.example" className="mock-kinetic">
+    <Frame domain="riomori.example" className="mock-kinetic">
       <div className="mv-kinetic">
-        <nav>
-          <span>work</span>
-          <span>about</span>
-          <span>note</span>
-        </nav>
-        <p className="mv-giant">RIO</p>
-        <div className="mv-run" aria-hidden="true">
-          <span>sets — campaigns — stills — night market — sets — campaigns — stills — night market —</span>
-        </div>
+        <header>
+          <b>Rio Mori</b>
+          <nav>
+            <span>Work</span>
+            <span>About</span>
+            <span>Note</span>
+          </nav>
+        </header>
+        <p className="mv-giant">
+          RIO
+          <small>art direction</small>
+        </p>
         <ol>
           <li>
-            <b>01</b> night market
+            <span className="shot shot-market" />
+            <div>
+              <b>01 Night market</b>
+              <em>Campaign · 2026</em>
+            </div>
           </li>
           <li>
-            <b>02</b> red room
+            <span className="shot shot-redroom" />
+            <div>
+              <b>02 Red room</b>
+              <em>Set · 2025</em>
+            </div>
           </li>
           <li>
-            <b>03</b> chrome fruit
+            <span className="shot shot-chrome" />
+            <div>
+              <b>03 Chrome fruit</b>
+              <em>Stills · 2025</em>
+            </div>
           </li>
         </ol>
       </div>
@@ -72,18 +112,29 @@ function KineticMock() {
 
 function BrokenMock() {
   return (
-    <Frame domain="june.example" className="mock-broken">
+    <Frame domain="junepark.example" className="mock-broken">
       <div className="mv-broken">
-        <div className="bk bk-photo">rooms</div>
-        <div className="bk bk-pink">hands</div>
-        <div className="bk bk-name">
-          june
+        <header>
+          <b>June Park</b>
+          <span>Photographs</span>
+        </header>
+        <figure className="bk-hero">
+          <span className="shot shot-room" />
+          <figcaption>The spare room, morning</figcaption>
+        </figure>
+        <figure className="bk-side">
+          <span className="shot shot-hands" />
+          <figcaption>Hands at the pass</figcaption>
+        </figure>
+        <figure className="bk-low">
+          <span className="shot shot-portrait" />
+          <figcaption>Portrait, blue hour</figcaption>
+        </figure>
+        <p className="bk-name">
+          Off the
           <br />
-          park
-        </div>
-        <div className="bk bk-yellow">the pass</div>
-        <div className="bk bk-blue">portraits</div>
-        <p>photographs, off the grid</p>
+          grid.
+        </p>
       </div>
     </Frame>
   );
@@ -91,25 +142,40 @@ function BrokenMock() {
 
 function GlassMock() {
   return (
-    <Frame domain="mira.example" className="mock-glass">
+    <Frame domain="mirasol.example" className="mock-glass">
       <div className="mv-glass">
+        <div className="glass-scene" aria-hidden="true">
+          <span className="cake cake-a" />
+          <span className="cake cake-b" />
+          <span className="cake cake-c" />
+        </div>
         <header>
-          <span>mira sol</span>
-          <span>pastry</span>
+          <b>Mira Sol</b>
+          <nav>
+            <span>Work</span>
+            <span>The book</span>
+            <span>Visit</span>
+          </nav>
         </header>
-        <h3>sweet work, clear glass</h3>
+        <section>
+          <p>Pastry studio</p>
+          <h3>Sweet work, held up to the light.</h3>
+        </section>
         <div>
           <article>
-            <b>tarts</b>
-            <span>citrus, olive oil</span>
+            <span className="shot shot-tart" />
+            <b>Olive oil tart</b>
+            <em>Citrus, 2026</em>
           </article>
           <article>
-            <b>glazes</b>
-            <span>mirror, fruit</span>
+            <span className="shot shot-glaze" />
+            <b>Mirror glaze</b>
+            <em>Fruit, 2025</em>
           </article>
           <article>
-            <b>the book</b>
-            <span>2026</span>
+            <span className="shot shot-book" />
+            <b>The book</b>
+            <em>Forty plates</em>
           </article>
         </div>
       </div>
@@ -119,19 +185,36 @@ function GlassMock() {
 
 function RetroMock() {
   return (
-    <Frame domain="nova.example" className="mock-retro">
+    <Frame domain="novakei.example" className="mock-retro">
       <div className="mv-retro">
-        <span className="mv-badge">2026</span>
-        <p className="mv-chrome">NOVA KEI</p>
-        <p className="mv-retro-sub">motion · titles · clubs</p>
-        <div>
-          <article>
-            <b>01</b> title sequence
-          </article>
-          <article>
-            <b>02</b> club identity
-          </article>
-        </div>
+        <header>
+          <b>Nova Kei</b>
+          <span>Motion reel</span>
+        </header>
+        <figure>
+          <span className="shot shot-title" />
+          <figcaption>
+            <strong>NOVA</strong>
+            <em>Title sequence · 00:42</em>
+          </figcaption>
+        </figure>
+        <ul>
+          <li>
+            <b>01</b>
+            <span>Opening titles</span>
+            <em>2026</em>
+          </li>
+          <li>
+            <b>02</b>
+            <span>Club identity</span>
+            <em>2025</em>
+          </li>
+          <li>
+            <b>03</b>
+            <span>Night bus</span>
+            <em>2025</em>
+          </li>
+        </ul>
       </div>
     </Frame>
   );
@@ -139,24 +222,37 @@ function RetroMock() {
 
 function DarkMock() {
   return (
-    <Frame domain="ellis.example" className="mock-dark">
+    <Frame domain="ellisward.example" className="mock-dark">
       <div className="mv-dark">
         <header>
-          <span>ellis ward</span>
-          <em>index</em>
+          <b>Ellis Ward</b>
+          <nav>
+            <span>Menu</span>
+            <span>Room</span>
+            <span>Visit</span>
+          </nav>
         </header>
-        <ul>
+        <figure>
+          <span className="shot shot-dining" />
+          <figcaption>The tasting room, after service</figcaption>
+        </figure>
+        <ol>
           <li>
-            <b>01</b> the tasting
+            <b>01</b>
+            <span>The tasting</span>
+            <em>Eight courses</em>
           </li>
           <li>
-            <b>02</b> private dining
+            <b>02</b>
+            <span>Private dining</span>
+            <em>Twelve seats</em>
           </li>
           <li>
-            <b>03</b> the diary
+            <b>03</b>
+            <span>The diary</span>
+            <em>What changed</em>
           </li>
-        </ul>
-        <div className="mv-ochre">menu</div>
+        </ol>
       </div>
     </Frame>
   );

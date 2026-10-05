@@ -581,9 +581,9 @@ button, input, select, textarea { font: inherit; }
 .closing p { margin: 12px auto 16px; max-width: 28rem; font-size: 1.15rem; font-weight: 650; }
 
 .shell {
-  min-height: 100svh;
   display: grid;
   grid-template-columns: 92px minmax(0, 1fr);
+  align-items: stretch;
   gap: 12px;
   padding: 12px;
 }

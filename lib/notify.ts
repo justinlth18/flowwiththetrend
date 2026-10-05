@@ -26,10 +26,17 @@ function brief(inquiry: InquiryInput) {
   ].join("\n");
 }
 
+const ink = "color:#161616;-webkit-text-fill-color:#161616;";
+const pink = "color:#ff3d92;-webkit-text-fill-color:#ff3d92;";
+const yellowFill = "background-color:#fff200;background-image:linear-gradient(#fff200,#fff200);";
+const blackFill = "background-color:#161616;background-image:linear-gradient(#161616,#161616);";
+const creamFill = "background-color:#fffdf2;background-image:linear-gradient(#fffdf2,#fffdf2);";
+const nightFill = "background-color:#140818;background-image:linear-gradient(#140818,#140818);";
+
 function row(labelText: string, value: string) {
   return `<tr>
-    <td style="padding:10px 0;border-top:2px solid #161616;font-family:Trebuchet MS,Arial,sans-serif;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#5c4a3a;width:120px;vertical-align:top;">${labelText}</td>
-    <td style="padding:10px 0;border-top:2px solid #161616;font-family:Trebuchet MS,Arial,sans-serif;font-size:16px;font-weight:700;color:#161616;">${escapeHtml(value)}</td>
+    <td class="row-label" style="padding:10px 0;border-top:2px solid #161616;font-family:Trebuchet MS,Arial,sans-serif;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#5c4a3a;-webkit-text-fill-color:#5c4a3a;width:120px;vertical-align:top;">${labelText}</td>
+    <td class="ink" style="padding:10px 0;border-top:2px solid #161616;font-family:Trebuchet MS,Arial,sans-serif;font-size:16px;font-weight:700;${ink}">${escapeHtml(value)}</td>
   </tr>`;
 }
 
@@ -39,44 +46,76 @@ function briefHtml(inquiry: InquiryInput) {
   const message = escapeHtml(inquiry.message).replace(/\n/g, "<br>");
   return `<!doctype html>
 <html>
-  <body style="margin:0;padding:0;background:#140818;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#140818;padding:28px 12px;">
-      <tr>
-        <td align="center">
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#fff200;border-radius:28px;">
-            <tr>
-              <td style="padding:28px 28px 8px;font-family:Trebuchet MS,Arial,sans-serif;">
-                <div style="font-size:13px;font-weight:800;letter-spacing:0.18em;">FLOW</div>
-                <div style="margin-top:14px;display:inline-block;background:#161616;color:#fff200;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:800;letter-spacing:0.12em;">NEW BRIEF</div>
-                <h1 style="margin:12px 0 0;font-size:42px;line-height:0.9;letter-spacing:-0.04em;color:#ff3d92;">${escapeHtml(inquiry.name)}<br>sent a note.</h1>
-                <p style="margin:12px 0 0;font-size:16px;font-weight:700;color:#161616;">A restaurant, a portfolio, or both. Read it, then reply.</p>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:8px 28px 20px;">
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                  ${row("Email", inquiry.email)}
-                  ${row("Phone", inquiry.phone ?? "Not given")}
-                  ${row("Project", project)}
-                  ${row("Name", inquiry.project_name ?? "Not given")}
-                  ${row("Timing", timing)}
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:0 28px 28px;">
-                <div style="background:#fffdf2;border:3px solid #161616;border-radius:18px;padding:16px 18px;font-family:Trebuchet MS,Arial,sans-serif;">
-                  <div style="font-size:12px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#a33b62;">What the link should do</div>
-                  <p style="margin:8px 0 0;font-size:16px;line-height:1.45;font-weight:650;color:#161616;">${message}</p>
-                </div>
-                <a href="mailto:${escapeHtml(inquiry.email)}" style="display:inline-block;margin-top:16px;background:#161616;color:#fff200;text-decoration:none;font-family:Trebuchet MS,Arial,sans-serif;font-weight:800;border-radius:999px;padding:12px 18px;">reply to ${escapeHtml(inquiry.name)}</a>
-              </td>
-            </tr>
-          </table>
-          <p style="font-family:Trebuchet MS,Arial,sans-serif;color:#d5d5d5;font-size:12px;">Flow With The Trend · a new tasting brief</p>
-        </td>
-      </tr>
-    </table>
+  <head>
+    <meta name="color-scheme" content="light only">
+    <meta name="supported-color-schemes" content="light only">
+    <style>
+      :root { color-scheme: light only; supported-color-schemes: light only; }
+      .page { ${nightFill} }
+      .card { ${yellowFill} }
+      .pill { ${blackFill} color:#fff200 !important; -webkit-text-fill-color:#fff200 !important; }
+      .note { ${creamFill} }
+      .ink { ${ink} }
+      .pink { ${pink} }
+      .row-label { color:#5c4a3a !important; -webkit-text-fill-color:#5c4a3a !important; }
+      .note-label { color:#a33b62 !important; -webkit-text-fill-color:#a33b62 !important; }
+      .foot { color:#d5d5d5 !important; -webkit-text-fill-color:#d5d5d5 !important; }
+      @media (prefers-color-scheme: dark) {
+        .page { ${nightFill} }
+        .card, .card td { ${yellowFill} }
+        .pill { ${blackFill} color:#fff200 !important; -webkit-text-fill-color:#fff200 !important; }
+        .note { ${creamFill} }
+        .ink { ${ink} }
+        .pink { ${pink} }
+        .row-label { color:#5c4a3a !important; -webkit-text-fill-color:#5c4a3a !important; }
+        .note-label { color:#a33b62 !important; -webkit-text-fill-color:#a33b62 !important; }
+        .foot { color:#d5d5d5 !important; -webkit-text-fill-color:#d5d5d5 !important; }
+      }
+      u + .body .gmail-blend-screen { background:#000; mix-blend-mode:screen; }
+      u + .body .gmail-blend-difference { background:#000; mix-blend-mode:difference; }
+    </style>
+  </head>
+  <body class="body page" style="margin:0;padding:0;${nightFill}">
+    <div class="gmail-blend-screen">
+      <div class="gmail-blend-difference">
+        <table role="presentation" class="page" width="100%" cellpadding="0" cellspacing="0" bgcolor="#140818" style="${nightFill}padding:28px 12px;">
+          <tr>
+            <td align="center">
+              <table role="presentation" class="card" width="100%" cellpadding="0" cellspacing="0" bgcolor="#fff200" style="max-width:560px;${yellowFill}border-radius:28px;">
+                <tr>
+                  <td class="card" bgcolor="#fff200" style="padding:28px 28px 8px;${yellowFill}font-family:Trebuchet MS,Arial,sans-serif;">
+                    <div class="ink" style="font-size:13px;font-weight:800;letter-spacing:0.18em;${ink}">FLOW</div>
+                    <div class="pill" style="margin-top:14px;display:inline-block;${blackFill}color:#fff200;-webkit-text-fill-color:#fff200;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:800;letter-spacing:0.12em;">NEW BRIEF</div>
+                    <h1 class="pink" style="margin:12px 0 0;font-size:42px;line-height:0.9;letter-spacing:-0.04em;${pink}">${escapeHtml(inquiry.name)}<br>sent a note.</h1>
+                    <p class="ink" style="margin:12px 0 0;font-size:16px;font-weight:700;${ink}">A restaurant, a portfolio, or both. Their address is in the list below.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="card" bgcolor="#fff200" style="padding:8px 28px 20px;${yellowFill}">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                      ${row("Email", inquiry.email)}
+                      ${row("Phone", inquiry.phone ?? "Not given")}
+                      ${row("Project", project)}
+                      ${row("Name", inquiry.project_name ?? "Not given")}
+                      ${row("Timing", timing)}
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="card" bgcolor="#fff200" style="padding:0 28px 28px;${yellowFill}">
+                    <div class="note" style="${creamFill}border:3px solid #161616;border-radius:18px;padding:16px 18px;font-family:Trebuchet MS,Arial,sans-serif;">
+                      <div class="note-label" style="font-size:12px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#a33b62;-webkit-text-fill-color:#a33b62;">What the link should do</div>
+                      <p class="ink" style="margin:8px 0 0;font-size:16px;line-height:1.45;font-weight:650;${ink}">${message}</p>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <p class="foot" style="font-family:Trebuchet MS,Arial,sans-serif;color:#d5d5d5;-webkit-text-fill-color:#d5d5d5;font-size:12px;">Flow With The Trend · a new tasting brief</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </body>
 </html>`;
 }
@@ -89,6 +128,7 @@ export async function notifyInquiry(inquiry: InquiryInput) {
   const apiKey = envValue("RESEND_API_KEY");
   const to = envValue("INQUIRY_NOTIFY_EMAIL");
   const from = envValue("INQUIRY_FROM_EMAIL") || "Flow With The Trend <onboarding@resend.dev>";
+  const replyTo = from.match(/<([^>]+)>/)?.[1] ?? from;
   if (!apiKey || !to) return { sent: false, error: "Email is not configured on the server." };
 
   try {
@@ -101,7 +141,7 @@ export async function notifyInquiry(inquiry: InquiryInput) {
       body: JSON.stringify({
         from,
         to: [to],
-        reply_to: inquiry.email,
+        reply_to: replyTo,
         subject: `New brief from ${inquiry.name}`,
         text: brief(inquiry),
         html: briefHtml(inquiry),

@@ -46,6 +46,6 @@ RESEND_API_KEY=re_your_key
 INQUIRY_NOTIFY_EMAIL=you@example.com
 ```
 
-`INQUIRY_NOTIFY_EMAIL` is the inbox that receives the brief. Reply goes to the person who sent it.
+`INQUIRY_NOTIFY_EMAIL` is the inbox that receives the brief. The sender's address is listed in the message.
 
 Until you verify a domain, Resend only delivers from `onboarding@resend.dev`, and only to the email on the Resend account. After the domain is verified, set `INQUIRY_FROM_EMAIL` to an address on that domain.

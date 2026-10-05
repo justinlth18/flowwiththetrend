@@ -762,7 +762,67 @@ button, input, select, textarea { font: inherit; }
 }
 .form-error { margin: 0; }
 .hp { position: absolute; left: -9999px; height: 0; overflow: hidden; }
-.success { display: grid; justify-items: start; gap: 8px; }
+.send-stage {
+  position: relative;
+  min-height: 420px;
+  display: grid;
+  place-items: center;
+  overflow: visible;
+  text-align: center;
+}
+.send-loader, .send-done { position: relative; z-index: 1; display: grid; justify-items: center; gap: 10px; }
+.send-loader p, .send-done > p { margin: 0; font-weight: 750; font-size: 1.15rem; }
+.send-orbit {
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 6px 6px 0 var(--green);
+  animation: send-spin 0.9s linear infinite;
+}
+.send-orbit-star { width: 46px; }
+.send-pill {
+  margin: 0;
+  background: var(--ink);
+  color: var(--yellow);
+  border-radius: 999px;
+  padding: 8px 16px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  animation: send-pop 0.45s cubic-bezier(0.16, 0.9, 0.3, 1.3) both;
+}
+.send-done .sticker {
+  text-align: center;
+  animation: send-pop 0.55s 0.12s cubic-bezier(0.16, 0.9, 0.3, 1.3) both;
+}
+.send-done > p:not(.send-pill) { animation: send-rise 0.45s 0.28s ease both; }
+.send-star {
+  position: absolute;
+  width: 42px;
+  opacity: 0;
+  z-index: 2;
+}
+.is-sent .send-star { animation: send-burst 0.7s cubic-bezier(0.16, 0.9, 0.3, 1.25) both; }
+.send-star-a { width: 64px; left: 8%; top: 12%; }
+.send-star-b { width: 36px; right: 12%; top: 18%; animation-delay: 0.08s; }
+.send-star-c { width: 48px; left: 14%; bottom: 16%; animation-delay: 0.16s; }
+.send-star-d { width: 32px; right: 16%; bottom: 18%; animation-delay: 0.22s; }
+@keyframes send-spin { to { transform: rotate(360deg); } }
+@keyframes send-pop {
+  0% { transform: scale(0.6) rotate(-6deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes send-rise {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes send-burst {
+  0% { transform: scale(0.2) rotate(-20deg); opacity: 0; }
+  70% { opacity: 1; }
+  100% { transform: scale(1) rotate(8deg); opacity: 1; }
+}
 .dev-note {
   background: var(--paper);
   border: 3px solid var(--ink);
@@ -1260,4 +1320,5 @@ button, input, select, textarea { font: inherit; }
     animation: none !important;
     transition: none !important;
   }
+  .send-star, .send-pill, .send-done .sticker, .send-done > p { opacity: 1; }
 }

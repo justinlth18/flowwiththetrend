@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { countries, countryByIso, detectCountryIso, flagEmoji } from "@/lib/countries";
 import { projectTypeOptions, timelineOptions, validateInquiry } from "@/lib/inquiry";
+import { Spark } from "@/components/art";
 import { Sticker } from "@/components/sticker";
 
 type Status = "idle" | "sending" | "sent" | "error";
@@ -65,6 +66,7 @@ export function InquiryForm({ direction }: { direction?: string }) {
     }
     setErrors({});
     setStatus("sending");
+    const started = Date.now();
 
     try {
       const response = await fetch("/api/inquiries", {
@@ -92,6 +94,8 @@ export function InquiryForm({ direction }: { direction?: string }) {
         return;
       }
       setDevNote(Boolean(body.dev));
+      const wait = Math.max(0, 900 - (Date.now() - started));
+      await new Promise((resolve) => setTimeout(resolve, wait));
       setStatus("sent");
     } catch {
       setFormError("The network dropped. Try again in a moment.");
@@ -99,17 +103,33 @@ export function InquiryForm({ direction }: { direction?: string }) {
     }
   }
 
-  if (status === "sent") {
+  if (status === "sending" || status === "sent") {
     return (
-      <div className="success" role="status">
-        <Sticker as="h2" text={"you're\nin"} />
-        <p>We read every note and reply within two weekdays.</p>
-        {devNote ? (
-          <p className="dev-note">
-            Developer note: Supabase keys are not set, so this inquiry was not stored. Add them to .env.local and
-            send it again.
-          </p>
-        ) : null}
+      <div className={`send-stage is-${status}`} role="status" aria-live="polite" tabIndex={-1}>
+        <Spark className="send-star send-star-a" color="#ff3d92" />
+        <Spark className="send-star send-star-b" color="#fff200" />
+        <Spark className="send-star send-star-c" color="#7fd4ff" />
+        <Spark className="send-star send-star-d" color="#c77dff" />
+        {status === "sending" ? (
+          <div className="send-loader">
+            <span className="send-orbit" aria-hidden="true">
+              <Spark className="send-orbit-star" color="#fff200" />
+            </span>
+            <p>sending the brief</p>
+          </div>
+        ) : (
+          <div className="send-done">
+            <p className="send-pill">sent</p>
+            <Sticker as="h2" text={"you're\nin"} />
+            <p>We read every note and reply within two weekdays.</p>
+            {devNote ? (
+              <p className="dev-note">
+                Developer note: Supabase keys are not set, so this inquiry was not stored. Add them to .env.local and
+                send it again.
+              </p>
+            ) : null}
+          </div>
+        )}
       </div>
     );
   }

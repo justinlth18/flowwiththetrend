@@ -930,6 +930,29 @@ button, input, select, textarea { font: inherit; }
     bottom: auto;
     max-height: calc(100svh - 104px);
     overflow: auto;
+    padding: 8px 12px 14px;
+  }
+  .menu-card .nav-list,
+  .inner-nav-panel .nav-list {
+    gap: 8px;
+  }
+  .menu-card .nav-link,
+  .inner-nav-panel .nav-link {
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    min-height: 58px;
+    background: rgba(255, 255, 255, 0.28);
+  }
+  .menu-card .nav-link > span:nth-child(2),
+  .inner-nav-panel .nav-link > span:nth-child(2) {
+    text-align: left;
+    padding-right: 12px;
+  }
+  .menu-card .nav-link.is-active,
+  .inner-nav-panel .nav-link.is-active {
+    background: var(--ink);
+    color: var(--yellow);
+    border-color: var(--ink);
   }
   .hero, .feature { min-height: 0; }
   .scene-hero, .scene-feature { min-height: 240px; }

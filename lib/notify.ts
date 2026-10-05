@@ -40,6 +40,11 @@ function row(labelText: string, value: string) {
   </tr>`;
 }
 
+function replyHref(email: string) {
+  const subject = encodeURIComponent("Re: your tasting brief");
+  return `mailto:${email}?subject=${subject}`;
+}
+
 function briefHtml(inquiry: InquiryInput) {
   const project = label(projectTypeOptions, inquiry.project_type);
   const timing = label(timelineOptions, inquiry.timeline);
@@ -107,7 +112,7 @@ function briefHtml(inquiry: InquiryInput) {
                       <div class="note-label" style="font-size:12px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#a33b62;-webkit-text-fill-color:#a33b62;">What the link should do</div>
                       <p class="ink" style="margin:8px 0 0;font-size:16px;line-height:1.45;font-weight:650;${ink}">${message}</p>
                     </div>
-                    <a class="pill" href="mailto:${encodeURIComponent(inquiry.email)}" style="display:inline-block;margin-top:16px;${blackFill}color:#fff200;-webkit-text-fill-color:#fff200;text-decoration:none;font-family:Trebuchet MS,Arial,sans-serif;font-weight:800;border-radius:999px;padding:12px 18px;">reply to ${escapeHtml(inquiry.name)}</a>
+                    <a class="pill" href="${replyHref(inquiry.email)}" style="display:inline-block;margin-top:16px;${blackFill}color:#fff200;-webkit-text-fill-color:#fff200;text-decoration:none;font-family:Trebuchet MS,Arial,sans-serif;font-weight:800;border-radius:999px;padding:12px 18px;">reply to ${escapeHtml(inquiry.email)}</a>
                   </td>
                 </tr>
               </table>

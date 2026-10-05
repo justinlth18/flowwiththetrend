@@ -45,8 +45,8 @@ export async function POST(request: Request) {
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     if (process.env.NODE_ENV !== "production") {
-      const notified = await notifyInquiry(parsed.data);
-      return NextResponse.json({ ok: true, persisted: false, dev: true, notified });
+      const notice = await notifyInquiry(parsed.data);
+      return NextResponse.json({ ok: true, persisted: false, dev: true, notified: notice.sent, notifyError: notice.error });
     }
     return NextResponse.json(
       { ok: false, error: "The studio inbox is not connected yet. Please try again soon." },
@@ -63,6 +63,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const notified = await notifyInquiry(parsed.data);
-  return NextResponse.json({ ok: true, persisted: true, notified });
+  const notice = await notifyInquiry(parsed.data);
+  return NextResponse.json({ ok: true, persisted: true, notified: notice.sent, notifyError: notice.error });
 }

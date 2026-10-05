@@ -18,11 +18,15 @@ function brief(inquiry: InquiryInput) {
   ].join("\n");
 }
 
+function envValue(name: string) {
+  return process.env[name]?.trim().replace(/^["']|["']$/g, "") ?? "";
+}
+
 export async function notifyInquiry(inquiry: InquiryInput) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.INQUIRY_NOTIFY_EMAIL;
-  const from = process.env.INQUIRY_FROM_EMAIL || "Flow With The Trend <onboarding@resend.dev>";
-  if (!apiKey || !to) return false;
+  const apiKey = envValue("RESEND_API_KEY");
+  const to = envValue("INQUIRY_NOTIFY_EMAIL");
+  const from = envValue("INQUIRY_FROM_EMAIL") || "Flow With The Trend <onboarding@resend.dev>";
+  if (!apiKey || !to) return { sent: false, error: "Email is not configured on the server." };
 
   try {
     const response = await fetch("https://api.resend.com/emails", {
@@ -42,11 +46,12 @@ export async function notifyInquiry(inquiry: InquiryInput) {
     if (!response.ok) {
       const detail = await response.text();
       console.error("inquiry email failed", response.status, detail.slice(0, 300));
-      return false;
+      return { sent: false, error: detail.slice(0, 300) };
     }
-    return true;
+    return { sent: true, error: "" };
   } catch (error) {
-    console.error("inquiry email failed", error instanceof Error ? error.message : "network");
-    return false;
+    const message = error instanceof Error ? error.message : "network";
+    console.error("inquiry email failed", message);
+    return { sent: false, error: message };
   }
 }

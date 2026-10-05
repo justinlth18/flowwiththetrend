@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { validateInquiry } from "@/lib/inquiry";
+import { notifyInquiry } from "@/lib/notify";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 const hits = new Map<string, { count: number; reset: number }>();
@@ -44,7 +45,8 @@ export async function POST(request: Request) {
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     if (process.env.NODE_ENV !== "production") {
-      return NextResponse.json({ ok: true, persisted: false, dev: true });
+      const notified = await notifyInquiry(parsed.data);
+      return NextResponse.json({ ok: true, persisted: false, dev: true, notified });
     }
     return NextResponse.json(
       { ok: false, error: "The studio inbox is not connected yet. Please try again soon." },
@@ -61,5 +63,6 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.json({ ok: true, persisted: true });
+  const notified = await notifyInquiry(parsed.data);
+  return NextResponse.json({ ok: true, persisted: true, notified });
 }

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NavIcon } from "@/components/art";
+import { NavIcon, Spark } from "@/components/art";
 import { navItems } from "@/lib/content";
 
 export function Burger({
@@ -51,6 +51,11 @@ export function NavList({ onNavigate }: { onNavigate?: () => void }) {
               <NavIcon name={item.icon} />
             </span>
             <span>{item.label}</span>
+            <span className="nav-pops" aria-hidden="true">
+              <Spark className="nav-pop nav-pop-a" color="#fff200" />
+              <Spark className="nav-pop nav-pop-b" color="#ff4fa0" />
+              <Spark className="nav-pop nav-pop-c" color="#7fd4ff" />
+            </span>
           </Link>
         );
       })}

@@ -87,7 +87,7 @@ function briefHtml(inquiry: InquiryInput) {
                     <div class="ink" style="font-size:13px;font-weight:800;letter-spacing:0.18em;${ink}">FLOW</div>
                     <div class="pill" style="margin-top:14px;display:inline-block;${blackFill}color:#fff200;-webkit-text-fill-color:#fff200;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:800;letter-spacing:0.12em;">NEW BRIEF</div>
                     <h1 class="pink" style="margin:12px 0 0;font-size:42px;line-height:0.9;letter-spacing:-0.04em;${pink}">${escapeHtml(inquiry.name)}<br>sent a note.</h1>
-                    <p class="ink" style="margin:12px 0 0;font-size:16px;font-weight:700;${ink}">A restaurant, a portfolio, or both. Their address is in the list below.</p>
+                    <p class="ink" style="margin:12px 0 0;font-size:16px;font-weight:700;${ink}">A restaurant, a portfolio, or both. Read it, then reply.</p>
                   </td>
                 </tr>
                 <tr>
@@ -107,6 +107,7 @@ function briefHtml(inquiry: InquiryInput) {
                       <div class="note-label" style="font-size:12px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#a33b62;-webkit-text-fill-color:#a33b62;">What the link should do</div>
                       <p class="ink" style="margin:8px 0 0;font-size:16px;line-height:1.45;font-weight:650;${ink}">${message}</p>
                     </div>
+                    <a class="pill" href="mailto:${encodeURIComponent(inquiry.email)}" style="display:inline-block;margin-top:16px;${blackFill}color:#fff200;-webkit-text-fill-color:#fff200;text-decoration:none;font-family:Trebuchet MS,Arial,sans-serif;font-weight:800;border-radius:999px;padding:12px 18px;">reply to ${escapeHtml(inquiry.name)}</a>
                   </td>
                 </tr>
               </table>
@@ -128,7 +129,6 @@ export async function notifyInquiry(inquiry: InquiryInput) {
   const apiKey = envValue("RESEND_API_KEY");
   const to = envValue("INQUIRY_NOTIFY_EMAIL");
   const from = envValue("INQUIRY_FROM_EMAIL") || "Flow With The Trend <onboarding@resend.dev>";
-  const replyTo = from.match(/<([^>]+)>/)?.[1] ?? from;
   if (!apiKey || !to) return { sent: false, error: "Email is not configured on the server." };
 
   try {
@@ -141,7 +141,7 @@ export async function notifyInquiry(inquiry: InquiryInput) {
       body: JSON.stringify({
         from,
         to: [to],
-        reply_to: replyTo,
+        reply_to: inquiry.email,
         subject: `New brief from ${inquiry.name}`,
         text: brief(inquiry),
         html: briefHtml(inquiry),

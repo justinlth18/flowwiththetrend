@@ -21,6 +21,19 @@ function Frame({
   );
 }
 
+function Shot({ name }: { name: string }) {
+  return (
+    <span className={`shot shot-${name}`} aria-hidden="true">
+      <i />
+      <i />
+      <i />
+      <i />
+      <i />
+      <i />
+    </span>
+  );
+}
+
 function VibrantMock() {
   return (
     <Frame domain="adacho.example" className="mock-vibrant">
@@ -28,39 +41,41 @@ function VibrantMock() {
         <header>
           <b>Ada Cho</b>
           <nav>
-            <span>Plates</span>
+            <span className="on">Selected</span>
             <span>Pop-ups</span>
             <span>Diary</span>
+            <span>Contact</span>
           </nav>
         </header>
         <div className="mv-hero">
           <div>
-            <p>Chef portfolio</p>
-            <strong>Plates with the volume up.</strong>
-            <em>Selected menus, pop-ups, and the diary from the pass.</em>
+            <p>Chef · Singapore</p>
+            <strong>Selected plates, from the pass.</strong>
+            <em>Private dining, three-night pop-ups, and a short diary of what left the kitchen.</em>
           </div>
           <figure>
-            <span className="shot shot-plate" />
-            <figcaption>Citrus, olive oil · 2026</figcaption>
+            <Shot name="plate" />
+            <figcaption>Citrus crab, olive oil · private dining · 2026</figcaption>
           </figure>
         </div>
         <ul>
           <li>
-            <span className="shot shot-night" />
+            <Shot name="night" />
             <b>Night market</b>
-            <small>Three nights in Kampong Glam</small>
+            <small>Kampong Glam · three nights</small>
           </li>
           <li>
-            <span className="shot shot-bowl" />
+            <Shot name="bowl" />
             <b>The red room</b>
-            <small>Private dining, twelve seats</small>
+            <small>Twelve seats · by request</small>
           </li>
           <li>
-            <span className="shot shot-citrus" />
+            <Shot name="citrus" />
             <b>Sunday diary</b>
             <small>What left the pass</small>
           </li>
         </ul>
+        <footer>Singapore · adacho.example</footer>
       </div>
     </Frame>
   );
@@ -73,38 +88,42 @@ function KineticMock() {
         <header>
           <b>Rio Mori</b>
           <nav>
-            <span>Work</span>
+            <span className="on">Work</span>
             <span>About</span>
             <span>Note</span>
           </nav>
         </header>
         <p className="mv-giant">
-          RIO
-          <small>art direction</small>
+          Rio Mori
+          <small>Art director · Singapore</small>
         </p>
         <ol>
           <li>
-            <span className="shot shot-market" />
+            <Shot name="market" />
             <div>
-              <b>01 Night market</b>
-              <em>Campaign · 2026</em>
+              <b>Night market</b>
+              <em>Campaign for a three-night residency · 2026</em>
             </div>
+            <small>01</small>
           </li>
           <li>
-            <span className="shot shot-redroom" />
+            <Shot name="redroom" />
             <div>
-              <b>02 Red room</b>
-              <em>Set · 2025</em>
+              <b>Red room</b>
+              <em>Identity for a twelve-seat dining room · 2025</em>
             </div>
+            <small>02</small>
           </li>
           <li>
-            <span className="shot shot-chrome" />
+            <Shot name="chrome" />
             <div>
-              <b>03 Chrome fruit</b>
-              <em>Stills · 2025</em>
+              <b>Chrome fruit</b>
+              <em>Stills for a pastry studio · 2025</em>
             </div>
+            <small>03</small>
           </li>
         </ol>
+        <p className="mv-kicker">Selected work, 2019–2026. Write with a project in mind.</p>
       </div>
     </Frame>
   );
@@ -116,25 +135,30 @@ function BrokenMock() {
       <div className="mv-broken">
         <header>
           <b>June Park</b>
-          <span>Photographs</span>
+          <span>Photographs · rooms, hands, the pass</span>
         </header>
         <figure className="bk-hero">
-          <span className="shot shot-room" />
-          <figcaption>The spare room, morning</figcaption>
+          <Shot name="room" />
+          <figcaption>
+            <b>The spare room</b>
+            <em>Tiong Bahru, morning light · 2026</em>
+          </figcaption>
         </figure>
         <figure className="bk-side">
-          <span className="shot shot-hands" />
-          <figcaption>Hands at the pass</figcaption>
+          <Shot name="hands" />
+          <figcaption>
+            <b>Service</b>
+            <em>Hands at the pass</em>
+          </figcaption>
         </figure>
         <figure className="bk-low">
-          <span className="shot shot-portrait" />
-          <figcaption>Portrait, blue hour</figcaption>
+          <Shot name="portrait" />
+          <figcaption>
+            <b>Blue hour</b>
+            <em>Portrait, after close</em>
+          </figcaption>
         </figure>
-        <p className="bk-name">
-          Off the
-          <br />
-          grid.
-        </p>
+        <p className="bk-note">Commissions open for dining rooms and cooks. Based in Singapore.</p>
       </div>
     </Frame>
   );
@@ -152,30 +176,30 @@ function GlassMock() {
         <header>
           <b>Mira Sol</b>
           <nav>
-            <span>Work</span>
+            <span className="on">Work</span>
             <span>The book</span>
             <span>Visit</span>
           </nav>
         </header>
         <section>
-          <p>Pastry studio</p>
-          <h3>Sweet work, held up to the light.</h3>
+          <p>Pastry studio · Tiong Bahru</p>
+          <h3>Cakes, tarts, and a small book of plates.</h3>
         </section>
-        <div>
+        <div className="glass-cards">
           <article>
-            <span className="shot shot-tart" />
+            <Shot name="tart" />
             <b>Olive oil tart</b>
-            <em>Citrus, 2026</em>
+            <em>Citrus · on the counter this month</em>
           </article>
           <article>
-            <span className="shot shot-glaze" />
+            <Shot name="glaze" />
             <b>Mirror glaze</b>
-            <em>Fruit, 2025</em>
+            <em>Fruit · studio menu, 2025</em>
           </article>
           <article>
-            <span className="shot shot-book" />
+            <Shot name="book" />
             <b>The book</b>
-            <em>Forty plates</em>
+            <em>Forty plates · softcover</em>
           </article>
         </div>
       </div>
@@ -189,30 +213,33 @@ function RetroMock() {
       <div className="mv-retro">
         <header>
           <b>Nova Kei</b>
-          <span>Motion reel</span>
+          <span>Motion · reel</span>
         </header>
-        <figure>
-          <span className="shot shot-title" />
+        <figure className="reel">
+          <Shot name="title" />
           <figcaption>
-            <strong>NOVA</strong>
-            <em>Title sequence · 00:42</em>
+            <span className="play" aria-hidden="true" />
+            <span className="track" aria-hidden="true">
+              <i />
+            </span>
+            <em>00:42 / 01:10</em>
           </figcaption>
         </figure>
         <ul>
           <li>
             <b>01</b>
             <span>Opening titles</span>
-            <em>2026</em>
+            <em>Short film · 2026</em>
           </li>
           <li>
             <b>02</b>
             <span>Club identity</span>
-            <em>2025</em>
+            <em>Nightlife · 2025</em>
           </li>
           <li>
             <b>03</b>
             <span>Night bus</span>
-            <em>2025</em>
+            <em>Music video · 2025</em>
           </li>
         </ul>
       </div>
@@ -227,32 +254,38 @@ function DarkMock() {
         <header>
           <b>Ellis Ward</b>
           <nav>
-            <span>Menu</span>
+            <span className="on">Menu</span>
             <span>Room</span>
             <span>Visit</span>
           </nav>
         </header>
         <figure>
-          <span className="shot shot-dining" />
-          <figcaption>The tasting room, after service</figcaption>
+          <Shot name="dining" />
+          <figcaption>The tasting room, after service · Keong Saik</figcaption>
         </figure>
         <ol>
           <li>
             <b>01</b>
             <span>The tasting</span>
-            <em>Eight courses</em>
+            <em>Eight courses · dinner</em>
           </li>
           <li>
             <b>02</b>
-            <span>Private dining</span>
-            <em>Twelve seats</em>
+            <span>The counter</span>
+            <em>Eight seats · walk-in</em>
           </li>
           <li>
             <b>03</b>
+            <span>Private dining</span>
+            <em>Twelve seats · booked</em>
+          </li>
+          <li>
+            <b>04</b>
             <span>The diary</span>
-            <em>What changed</em>
+            <em>What changed this week</em>
           </li>
         </ol>
+        <footer>Keong Saik · ellisward.example</footer>
       </div>
     </Frame>
   );

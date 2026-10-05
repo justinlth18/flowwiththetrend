@@ -4,7 +4,7 @@
 -- cannot read or write customer messages.
 
 create table if not exists public.inquiries (
-  id uuid primary key default gen_random_uuid(),
+  id uuid primary key default extensions.gen_random_uuid(),
   created_at timestamptz not null default now(),
   name text not null check (char_length(name) between 2 and 80),
   email text not null check (position('@' in email) > 1),
@@ -17,8 +17,14 @@ create table if not exists public.inquiries (
 
 alter table public.inquiries enable row level security;
 
+alter table public.inquiries
+  alter column id set default extensions.gen_random_uuid();
+
 revoke all on table public.inquiries from anon, authenticated;
+grant usage on schema public to service_role;
 grant select, insert on table public.inquiries to service_role;
+
+notify pgrst, 'reload schema';
 
 create index if not exists inquiries_created_at_idx
   on public.inquiries (created_at desc);

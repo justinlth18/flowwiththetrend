@@ -54,7 +54,7 @@ export async function POST(request: Request) {
 
   const { error } = await supabase.from("inquiries").insert(parsed.data);
   if (error) {
-    console.error("inquiry insert failed", error.code);
+    console.error("inquiry insert failed", error.code, error.message);
     return NextResponse.json(
       { ok: false, error: "We could not save that message. Please try again." },
       { status: 500 },

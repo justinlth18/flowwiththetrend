@@ -239,8 +239,8 @@ export function InquiryForm({ direction }: { direction?: string }) {
           {formError}
         </p>
       ) : null}
-      <button className="btn" type="submit" disabled={status === "sending"}>
-        {status === "sending" ? "sending…" : "send the brief"}
+      <button className="btn" type="submit">
+        send the brief
       </button>
     </form>
   );

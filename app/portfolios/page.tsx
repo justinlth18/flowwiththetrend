@@ -18,6 +18,12 @@ export default function PortfoliosPage() {
         <p className="lede">
           Six directions we are designing portfolios in this year. Choose one and the mockup changes.
         </p>
+        <a className="folio-latest" href="/portfolios/lee-kar-meng" target="_blank" rel="noopener noreferrer">
+          <span className="kicker">portfolio</span>
+          <strong>Lee Kar Meng</strong>
+          <em>Business graduate. Opens in a new page, in its own design.</em>
+          <span className="btn">open the portfolio</span>
+        </a>
         <PortfolioPicker />
       </section>
       <div className="page-grid">

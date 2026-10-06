@@ -1406,6 +1406,27 @@ button, input, select, textarea { font: inherit; }
 .mv-dark li { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; padding: 8px 0; border-bottom: 1px solid #2a2622; }
 .mv-dark li b { color: #e2b15a; grid-row: span 2; align-self: center; }
 .mv-dark li em { color: #a89884; }
+.folio-latest {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 18px;
+  padding: 16px;
+  border: 3px solid var(--ink);
+  border-radius: 22px;
+  background: var(--paper);
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.folio-latest strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+.folio-latest em { font-style: normal; font-weight: 650; max-width: 36rem; }
+.folio-latest .btn { justify-self: start; margin-top: 6px; }
+
 @media (max-width: 800px) {
   .trend-panel, .mv-hero, .glass-cards, .mv-retro ul, .mv-vibrant ul, .mv-dark, .mv-broken { grid-template-columns: 1fr; }
   .mv-broken { grid-template-areas: "head" "hero" "side" "low" "note"; }

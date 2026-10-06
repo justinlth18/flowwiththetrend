@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { Fredoka, Lilita_One } from "next/font/google";
 import { EnterAnimation } from "@/components/enter-animation";
 import { Footer } from "@/components/footer";
@@ -33,17 +34,26 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const pathname = (await headers()).get("x-pathname") ?? "";
+  const solo = pathname.startsWith("/portfolios/lee-kar-meng");
+
   return (
-    <html lang="en" className={`${fredoka.variable} ${lilita.variable}`}>
+    <html lang="en" className={solo ? undefined : `${fredoka.variable} ${lilita.variable}`}>
       <body>
-        <ThemeBackground />
-        <a className="skip" href="#content">
-          Skip to content
-        </a>
-        <EnterAnimation />
-        <div id="content">{children}</div>
-        <Footer />
+        {solo ? (
+          children
+        ) : (
+          <>
+            <ThemeBackground />
+            <a className="skip" href="#content">
+              Skip to content
+            </a>
+            <EnterAnimation />
+            <div id="content">{children}</div>
+            <Footer />
+          </>
+        )}
       </body>
     </html>
   );

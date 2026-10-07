@@ -63,12 +63,14 @@ export function JustinSite() {
           <span>{justin.place}</span>
           <span>a working notebook</span>
         </p>
-        <h1 className="write">
-          {justin.name}
+        <h1>
+          <span className="hl">{justin.name}</span>
           <small>{justin.chineseName}</small>
         </h1>
-        <p className="role">{justin.role}</p>
-        <p className="lead write">{justin.summary}</p>
+        <p className="role">
+          <span className="hl">{justin.role}</span>
+        </p>
+        <p className="lead">{justin.summary}</p>
         <p className="links">
           {justin.links.map((link) => (
             <a key={link.href} href={link.href}>
@@ -78,17 +80,17 @@ export function JustinSite() {
         </p>
 
         <section id="experience">
-          <h2 className="write">Where I have worked</h2>
+          <h2>Where I have worked</h2>
           <ol>
             {experience.map((job) => (
               <li key={`${job.company}-${job.when}`} className="reveal">
                 <div className="margin">
-                  <b>{job.when}</b>
-                  {job.meta ? <em>{job.meta}</em> : null}
+                  <b className={job.meta === "Contract" ? "hl" : undefined}>{job.when}</b>
+                  {job.meta ? <em className="hl">{job.meta}</em> : null}
                 </div>
                 <div>
-                  <strong>{job.role}</strong>
-                  <span>{job.company}</span>
+                  <strong className="hl">{job.role}</strong>
+                  <span className="hl">{job.company}</span>
                   <ul>
                     {job.points.map((point) => (
                       <li key={point}>{point}</li>
@@ -101,10 +103,12 @@ export function JustinSite() {
         </section>
 
         <section id="skills">
-          <h2 className="write">In the margin</h2>
+          <h2>In the margin</h2>
           {skillGroups.map((group) => (
             <div key={group.name} className="reveal">
-              <h3>{group.name}</h3>
+              <h3>
+                <span className={group.name === "From CROSSUB" ? "hl" : undefined}>{group.name}</span>
+              </h3>
               <ul className="chips">
                 {group.items.map((item) => (
                   <li key={item}>{item}</li>
@@ -115,13 +119,13 @@ export function JustinSite() {
         </section>
 
         <section id="study">
-          <h2 className="write">Study</h2>
+          <h2>Study</h2>
           <ul className="study">
             {education.map((item) => (
               <li key={item.school} className="reveal">
                 <b>{item.when}</b>
                 <span>
-                  <strong>{item.school}</strong>
+                  <strong className="hl">{item.school}</strong>
                   {item.credential}
                 </span>
               </li>
@@ -138,8 +142,8 @@ export function JustinSite() {
         </section>
 
         <footer id="contact">
-          <h2 className="write">Write me</h2>
-          <a className="big" href={`mailto:${justin.email}`}>
+          <h2>Write me</h2>
+          <a className="big hl" href={`mailto:${justin.email}`}>
             {justin.email}
           </a>
           <a className="big" href={justin.phoneHref}>

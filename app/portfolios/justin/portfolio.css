@@ -86,47 +86,63 @@ body:has(.note) {
   color: var(--red);
   font-size: 0.95rem;
 }
-h1, h2, h3, .role, .signoff, .big {
+h1, h2, h3, .role, .signoff, .big, ol strong, .margin b, .study strong {
   font-family: var(--font-script), "Caveat", cursive;
   font-weight: 700;
   color: var(--ink);
+  line-height: 1.25;
+}
+h1, h2, h3, .role, .margin, ol > li > div, .study > li {
+  position: relative;
+  z-index: 1;
+  background: var(--paper);
 }
 h1 {
   margin: 0;
   font-size: clamp(3rem, 7vw, 4.6rem);
-  line-height: 0.9;
+  line-height: 1.15;
+  padding: 0.08em 0 0.16em;
 }
 h1 small {
   display: block;
-  margin-top: 4px;
+  margin-top: 0.1em;
   font-size: 0.42em;
+  line-height: 1.2;
   color: var(--pen);
 }
-.role { margin: 8px 0 0; font-size: 1.7rem; color: var(--red); }
-.lead { max-width: 38rem; margin: 12px 0 0; }
+.role { margin: 10px 0 0; font-size: 1.7rem; line-height: 1.3; color: var(--red); }
+.lead { max-width: 38rem; margin: 14px 0 0; line-height: 1.65; }
 .links { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 14px 0 8px; }
 .links a { text-underline-offset: 3px; }
 
 h2 {
-  margin: 28px 0 10px;
-  font-size: 2.2rem;
-  border-bottom: 2px solid rgba(194, 59, 59, 0.35);
-  display: inline-block;
+  margin: 32px 0 12px;
+  font-size: 2.4rem;
+  line-height: 1.2;
+  padding: 0.08em 0 0.18em;
+  border-bottom: 2px solid rgba(194, 59, 59, 0.45);
 }
-h3 { margin: 16px 0 6px; font-size: 1.55rem; color: var(--pen); }
+h3 { margin: 18px 0 8px; font-size: 1.65rem; line-height: 1.25; color: var(--pen); }
 
-ol, .study { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
-ol li, .study li {
+ol, .study { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+ol > li, .study > li {
   display: grid;
-  grid-template-columns: 132px 1fr;
-  gap: 12px;
+  grid-template-columns: minmax(148px, 180px) 1fr;
+  gap: 12px 16px;
 }
-.margin b, .study b { display: block; color: var(--red); font-size: 0.95rem; }
-.margin em { color: var(--pen); font-style: normal; font-size: 0.92rem; }
-ol strong, .study strong { display: block; font-size: 1.15rem; }
-ol span, .study span { display: block; }
-ol ul { margin: 6px 0 0; padding-left: 1.1rem; }
-ol ul li { display: list-item; }
+.margin b, .study b {
+  display: inline;
+  color: var(--red);
+  font-size: 1.35rem;
+  line-height: 1.25;
+  padding: 0 0.08em 0.08em;
+}
+.margin em { display: block; color: var(--pen); font-style: normal; font-size: 1.05rem; line-height: 1.35; }
+ol strong, .study strong { display: inline; font-size: 1.55rem; line-height: 1.2; padding: 0 0.08em; }
+ol > li span, .study span { display: inline; line-height: 1.45; }
+.study span { display: block; }
+ol ul { margin: 8px 0 0; padding-left: 1.15rem; }
+ol ul li { display: list-item; line-height: 1.55; margin: 0; padding: 0.12em 0; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .chips li {
@@ -136,11 +152,13 @@ ol ul li { display: list-item; }
 
 footer { margin-top: 12px; }
 .big {
-  display: block;
+  display: inline-block;
   width: fit-content;
+  margin: 4px 0;
   font-size: clamp(1.6rem, 4vw, 2.3rem);
   text-decoration: none;
-  line-height: 1.15;
+  line-height: 1.35;
+  padding: 0.04em 0.12em 0.12em;
 }
 .big:hover { color: var(--red); }
 .signoff { margin: 18px 0 0; font-size: 1.8rem; transform: rotate(-2deg); }
@@ -164,12 +182,14 @@ footer { margin-top: 12px; }
   border-radius: 50%;
 }
 
-.write { animation: ink 1.15s steps(28, end) both; }
-h1.write { animation-duration: 1.4s; }
-.lead.write { animation-delay: 0.35s; }
-@keyframes ink {
-  from { clip-path: inset(0 100% 0 0); }
-  to { clip-path: inset(0 0 0 0); }
+.hl {
+  background-image: linear-gradient(#ffe56a, #ffe56a);
+  background-repeat: no-repeat;
+  background-size: 100% 0.42em;
+  background-position: 0 88%;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 0.12em 0.06em;
 }
 
 .note.js .reveal { opacity: 0; transform: translateY(10px); }
@@ -182,7 +202,7 @@ h1.write { animation-duration: 1.4s; }
 @media (max-width: 720px) {
   .notebook { padding: 28px 16px 40px 48px; }
   .tabs nav { display: none; }
-  ol li, .study li { grid-template-columns: 1fr; gap: 2px; }
+  ol > li, .study > li { grid-template-columns: 1fr; gap: 2px; }
   .stain { display: none; }
 }
 

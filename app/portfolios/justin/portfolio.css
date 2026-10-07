@@ -1,6 +1,6 @@
 body:has(.note) {
   margin: 0;
-  background: #8d6b43;
+  background: #1b140f;
   color: #1d2c4a;
   color-scheme: light;
 }
@@ -13,16 +13,50 @@ body:has(.note) {
   --line: rgba(90, 130, 180, 0.28);
   min-height: 100svh;
   color: var(--ink);
+  isolation: isolate;
   font-family: var(--font-pen), "Kalam", cursive;
   font-size: 1.12rem;
   line-height: 1.55;
 }
 
 .note * { box-sizing: border-box; }
+.note::before,
+.note::after {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  z-index: -1;
+  pointer-events: none;
+}
+.note::before {
+  background:
+    radial-gradient(ellipse at 18% 12%, rgba(255, 186, 120, 0.55), transparent 36%),
+    radial-gradient(ellipse at 82% 78%, rgba(72, 108, 196, 0.45), transparent 42%),
+    radial-gradient(ellipse at 48% 110%, rgba(196, 84, 62, 0.35), transparent 38%),
+    linear-gradient(165deg, #3a2a22, #1b140f 55%, #24160f);
+  background-size: 140% 140%, 150% 150%, 130% 130%, 100% 100%;
+  animation: desk-glow 22s ease-in-out infinite alternate;
+}
+.note::after {
+  background-image:
+    radial-gradient(circle, rgba(255, 236, 196, 0.7) 0 1.5px, transparent 2px),
+    radial-gradient(circle, rgba(255, 214, 160, 0.45) 0 1px, transparent 1.6px);
+  background-size: 180px 220px, 260px 180px;
+  animation: desk-dust 36s linear infinite;
+  opacity: 0.55;
+}
+@keyframes desk-glow {
+  from { background-position: 0% 10%, 100% 90%, 40% 100%, 0 0; }
+  to { background-position: 18% 30%, 70% 40%, 60% 70%, 0 0; }
+}
+@keyframes desk-dust {
+  from { background-position: 0 0, 40px 80px; }
+  to { background-position: 0 -220px, -80px -180px; }
+}
 .note ::selection { background: #f7d56a; color: var(--ink); }
 .note a { color: var(--pen); }
 
-.track { height: 520vh; }
+.track { height: 1040vh; }
 .stage {
   position: sticky;
   top: 0;
@@ -147,7 +181,6 @@ h1, h2, h3, .role, .signoff, .big, ol strong, .margin b, .study strong {
 h1, h2, h3, .role, .margin, ol > li > div, .study > li {
   position: relative;
   z-index: 1;
-  background: var(--paper);
 }
 h1 {
   margin: 0;
@@ -215,31 +248,13 @@ footer { margin-top: 12px; }
 .big:hover { color: var(--red); }
 .signoff { margin: 18px 0 0; font-size: 1.8rem; transform: rotate(-2deg); }
 
-.stain {
-  position: absolute;
-  right: 36px;
-  top: 48px;
-  width: 86px;
-  height: 86px;
-  border: 8px solid rgba(120, 72, 32, 0.16);
-  border-radius: 50%;
-  transform: rotate(12deg);
-  pointer-events: none;
-}
-.stain::after {
-  content: "";
-  position: absolute;
-  inset: 10px;
-  border: 3px solid rgba(120, 72, 32, 0.1);
-  border-radius: 50%;
-}
-
 .hl {
-  background: #ffe56a;
+  background-color: transparent;
+  background-image: linear-gradient(transparent 0.55em, rgba(194, 74, 74, 0.28) 0.55em, rgba(194, 74, 74, 0.28) 0.95em, transparent 0.95em);
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-  padding: 0.08em 0.16em 0.12em;
-  border-radius: 2px;
+  padding: 0 0.08em;
+  border-radius: 0;
 }
 .margin em.hl { display: inline; }
 
@@ -253,7 +268,6 @@ footer { margin-top: 12px; }
 @media (max-width: 720px) {
   .sheet { padding: 28px 22px 40px 52px; max-height: calc(100vh - 108px); }
   ol > li, .study > li { grid-template-columns: 1fr; gap: 2px; }
-  .stain { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

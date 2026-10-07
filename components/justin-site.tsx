@@ -22,46 +22,58 @@ function PageBody({ index }: { index: number }) {
 
 export function JustinSite() {
   const [page, setPage] = useState(0);
-  const [turn, setTurn] = useState(0);
-  const [lift, setLift] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
+  const bookRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const track = trackRef.current;
-    if (!track) return;
+    const book = bookRef.current;
+    if (!track || !book) return;
 
-    function read() {
+    let target = 0;
+    let current = 0;
+    let shown = 0;
+    let frame = 0;
+
+    function sample() {
       const node = trackRef.current;
       if (!node) return;
       const height = node.offsetHeight - window.innerHeight;
       const y = Math.min(Math.max(0, window.scrollY - node.offsetTop), Math.max(height, 0));
       const progress = height <= 0 ? 0 : y / height;
-      const scaled = progress * (pages.length - 1);
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        setPage(Math.min(pages.length - 1, Math.round(scaled)));
-        setTurn(0);
-        setLift(0);
-        return;
-      }
-      if (scaled >= pages.length - 1 - 0.001) {
-        setPage(pages.length - 1);
-        setTurn(0);
-        setLift(0);
-        return;
-      }
-      const index = Math.floor(scaled);
-      const fraction = scaled - index;
-      setPage(index);
-      setTurn(fraction);
-      setLift(Math.sin(fraction * Math.PI));
+      target = progress * (pages.length - 1);
     }
 
-    read();
-    window.addEventListener("scroll", read, { passive: true });
-    window.addEventListener("resize", read);
+    function paint(value: number) {
+      const last = pages.length - 1;
+      const atEnd = value >= last - 0.001;
+      const index = atEnd ? last : Math.floor(value);
+      const fraction = atEnd ? 0 : value - index;
+      book?.style.setProperty("--turn", String(fraction));
+      book?.style.setProperty("--lift", String(Math.sin(fraction * Math.PI)));
+      if (index !== shown) {
+        shown = index;
+        setPage(index);
+      }
+    }
+
+    function tick() {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      current = reduce ? target : current + (target - current) * 0.11;
+      if (Math.abs(target - current) < 0.0006) current = target;
+      paint(current);
+      frame = window.requestAnimationFrame(tick);
+    }
+
+    sample();
+    paint(0);
+    frame = window.requestAnimationFrame(tick);
+    window.addEventListener("scroll", sample, { passive: true });
+    window.addEventListener("resize", sample);
     return () => {
-      window.removeEventListener("scroll", read);
-      window.removeEventListener("resize", read);
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", sample);
+      window.removeEventListener("resize", sample);
     };
   }, []);
 
@@ -89,7 +101,7 @@ export function JustinSite() {
           </nav>
         </header>
 
-        <div className="book" style={{ ["--turn" as string]: turn, ["--lift" as string]: lift }}>
+        <div className="book" ref={bookRef}>
           <article className="sheet under" aria-hidden={next === page}>
             <Sheet index={next} place={justin.place} count={pages.length} />
             <div className="shade" />
@@ -118,7 +130,6 @@ function Sheet({ index, place, count }: { index: number; place: string; count: n
         </span>
       </p>
       <PageBody index={index} />
-      {index === 0 ? <i className="stain" aria-hidden="true" /> : null}
     </>
   );
 }
@@ -140,8 +151,7 @@ function About() {
             {link.label}
           </a>
         ))}
-      </p>
-      <i className="stain" aria-hidden="true" />
+        </p>
     </>
   );
 }

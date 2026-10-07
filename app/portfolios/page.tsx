@@ -31,6 +31,12 @@ export default function PortfoliosPage() {
             <em>Regional manager. Opens in a new page, in a different design.</em>
             <span className="btn">open the portfolio</span>
           </a>
+          <a className="folio-latest" href="/portfolios/justin" target="_blank" rel="noopener noreferrer">
+            <span className="kicker">portfolio</span>
+            <strong>Justin Looi Teng Hein</strong>
+            <em>Frontend developer. Opens in a new page, written like a notebook.</em>
+            <span className="btn">open the portfolio</span>
+          </a>
         </div>
         <PortfolioPicker />
       </section>

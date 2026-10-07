@@ -37,7 +37,9 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const pathname = (await headers()).get("x-pathname") ?? "";
   const solo =
-    pathname.startsWith("/portfolios/lee-kar-meng") || pathname.startsWith("/portfolios/nicson-chang-zhiyang");
+    pathname.startsWith("/portfolios/lee-kar-meng") ||
+    pathname.startsWith("/portfolios/nicson-chang-zhiyang") ||
+    pathname.startsWith("/portfolios/justin");
 
   return (
     <html lang="en" className={solo ? undefined : `${fredoka.variable} ${lilita.variable}`}>

@@ -7,7 +7,7 @@ export const justin = {
   phone: "+60 11-1212-8757",
   phoneHref: "tel:+601112128757",
   summary:
-    "I studied cybersecurity, then moved into the screen people actually touch. White-label sites in React and Next.js, interfaces in Figma, and now a contract on CROSSUB: the web dashboard and the inspector app for a property platform.",
+    "I studied cybersecurity, then moved into the screen people actually touch. White-label sites in React and Next.js, interfaces in Figma, and now a contract on CROSSUB. I use AI for that work, including about 50% of the backend and the QA testing.",
   links: [
     { label: "Email", href: "mailto:justinlth18@gmail.com" },
     { label: "WhatsApp", href: "https://wa.me/601112128757" },
@@ -29,6 +29,7 @@ export const experience = [
       "The Expo inspector app for iOS and Android, including camera, location, and field work.",
       "Forms with React Hook Form and Zod, state with Zustand, UI with Tailwind CSS and Radix.",
       "Tests with Vitest, in a pnpm monorepo that talks to a NestJS and Prisma API.",
+      "About 50% of the backend, and the QA testing, done with the help of AI.",
     ],
   },
   {

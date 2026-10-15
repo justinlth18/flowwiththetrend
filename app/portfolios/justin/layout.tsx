@@ -1,17 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Caveat, Kalam } from "next/font/google";
+import { Rajdhani } from "next/font/google";
+import GradientASCII from "@/components/gradient-ascii";
 import "./portfolio.css";
 
-const kalam = Kalam({
+const rajdhani = Rajdhani({
   subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-pen",
-});
-
-const caveat = Caveat({
-  subsets: ["latin"],
-  weight: ["500", "700"],
-  variable: "--font-script",
+  weight: ["500", "600", "700"],
+  variable: "--font-holo",
 });
 
 export const metadata: Metadata = {
@@ -21,11 +16,16 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#c4a574",
+  themeColor: "#1a0a16",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function JustinLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <div className={`${kalam.variable} ${caveat.variable} note`}>{children}</div>;
+  return (
+    <div className={`${rajdhani.variable} note`}>
+      <GradientASCII className="desk" colors={["#12060e", "#4a1830", "#c45c78", "#1c0a12"]} />
+      {children}
+    </div>
+  );
 }

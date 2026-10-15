@@ -38,10 +38,11 @@ export function JustinSite() {
     function sample() {
       const node = trackRef.current;
       if (!node) return;
-      const height = node.offsetHeight - window.innerHeight;
-      const y = Math.min(Math.max(0, window.scrollY - node.offsetTop), Math.max(height, 0));
-      const progress = height <= 0 ? 0 : y / height;
-      target = progress * (pages.length - 1);
+      const span = window.innerHeight * (pages.length - 1);
+      const y = Math.min(Math.max(0, window.scrollY - node.offsetTop), span);
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const atBottom = window.scrollY >= maxScroll - 2;
+      target = atBottom ? pages.length - 1 : (y / span) * (pages.length - 1);
     }
 
     function paint(value: number) {
@@ -80,8 +81,8 @@ export function JustinSite() {
   function goTo(index: number) {
     const node = trackRef.current;
     if (!node) return;
-    const height = node.offsetHeight - window.innerHeight;
-    const top = node.offsetTop + (index / (pages.length - 1)) * height;
+    const span = window.innerHeight * (pages.length - 1);
+    const top = node.offsetTop + (index / (pages.length - 1)) * span;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
   }
@@ -109,7 +110,6 @@ export function JustinSite() {
           <div className="leaf">
             <article className="sheet face front" aria-label={`${pages[page].label}, page ${page + 1} of ${pages.length}`}>
               <Sheet index={page} place={justin.place} count={pages.length} />
-              <div className="sheen" />
             </article>
             <div className="sheet face back" aria-hidden="true" />
           </div>

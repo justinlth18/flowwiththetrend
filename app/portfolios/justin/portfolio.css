@@ -20,15 +20,12 @@ body:has(.note) {
 }
 
 .note * { box-sizing: border-box; }
-.note::before,
-.note::after {
+.note::before {
   content: "";
   position: fixed;
   inset: -10%;
   z-index: -1;
   pointer-events: none;
-}
-.note::before {
   background:
     radial-gradient(ellipse at 18% 12%, rgba(255, 186, 120, 0.55), transparent 36%),
     radial-gradient(ellipse at 82% 78%, rgba(72, 108, 196, 0.45), transparent 42%),
@@ -37,30 +34,20 @@ body:has(.note) {
   background-size: 140% 140%, 150% 150%, 130% 130%, 100% 100%;
   animation: desk-glow 22s ease-in-out infinite alternate;
 }
-.note::after {
-  background-image:
-    radial-gradient(circle, rgba(255, 236, 196, 0.7) 0 1.5px, transparent 2px),
-    radial-gradient(circle, rgba(255, 214, 160, 0.45) 0 1px, transparent 1.6px);
-  background-size: 180px 220px, 260px 180px;
-  animation: desk-dust 36s linear infinite;
-  opacity: 0.55;
-}
 @keyframes desk-glow {
   from { background-position: 0% 10%, 100% 90%, 40% 100%, 0 0; }
   to { background-position: 18% 30%, 70% 40%, 60% 70%, 0 0; }
 }
-@keyframes desk-dust {
-  from { background-position: 0 0, 40px 80px; }
-  to { background-position: 0 -220px, -80px -180px; }
-}
 .note ::selection { background: #f7d56a; color: var(--ink); }
 .note a { color: var(--pen); }
 
-.track { height: 1040vh; }
+.track { height: 500vh; }
 .stage {
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -96,8 +83,8 @@ body:has(.note) {
 }
 .sheet {
   min-height: min(72vh, 760px);
-  max-height: calc(100vh - 132px);
-  overflow: auto;
+  max-height: calc(100dvh - 120px);
+  overflow: hidden;
   padding: 36px 40px 48px 78px;
   background-color: var(--paper);
   background-image:
@@ -125,7 +112,6 @@ body:has(.note) {
   transform-origin: left center;
   transform-style: preserve-3d;
   transform: rotateY(calc(var(--turn) * -180deg)) translateZ(calc(var(--lift) * 28px));
-  filter: drop-shadow(calc(var(--lift) * -18px) calc(var(--lift) * 16px) calc(var(--lift) * 18px) rgba(40, 22, 8, 0.35));
 }
 .face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .face.front { position: relative; }
@@ -140,20 +126,6 @@ body:has(.note) {
   border-radius: 0 14px 14px 0;
   box-shadow: inset 0 0 40px rgba(90, 60, 20, 0.12);
 }
-.sheen {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    rgba(60, 36, 14, calc(var(--lift) * 0.16)),
-    transparent 22%,
-    transparent 68%,
-    rgba(255, 248, 220, calc(var(--lift) * 0.55))
-  );
-  pointer-events: none;
-}
-
 .holes {
   position: absolute;
   left: 18px;
@@ -202,15 +174,15 @@ h1 small {
 .links a { text-underline-offset: 3px; }
 
 h2 {
-  margin: 32px 0 12px;
-  font-size: 2.4rem;
+  margin: 16px 0 8px;
+  font-size: 2.2rem;
   line-height: 1.2;
-  padding: 0.08em 0 0.18em;
+  padding: 0.08em 0 0.12em;
   border-bottom: 2px solid rgba(194, 59, 59, 0.45);
 }
 h3 { margin: 18px 0 8px; font-size: 1.65rem; line-height: 1.25; color: var(--pen); }
 
-ol, .study { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+ol, .study { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 ol > li, .study > li {
   display: grid;
   grid-template-columns: minmax(148px, 180px) 1fr;
@@ -227,8 +199,8 @@ ol > li, .study > li {
 ol strong, .study strong { display: inline; font-size: 1.55rem; line-height: 1.2; padding: 0 0.08em; }
 ol > li span, .study span { display: inline; line-height: 1.45; }
 .study span { display: block; }
-ol ul { margin: 8px 0 0; padding-left: 1.15rem; }
-ol ul li { display: list-item; line-height: 1.55; margin: 0; padding: 0.12em 0; }
+ol ul { margin: 2px 0 0; padding-left: 1.15rem; }
+ol ul li { display: list-item; line-height: 1.35; margin: 0; padding: 0; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .chips li {
@@ -267,7 +239,7 @@ footer { margin-top: 12px; }
 }
 
 @media (max-width: 720px) {
-  .sheet { padding: 28px 22px 40px 52px; max-height: calc(100vh - 108px); }
+  .sheet { padding: 28px 22px 40px 52px; max-height: calc(100dvh - 96px); }
   ol > li, .study > li { grid-template-columns: 1fr; gap: 2px; }
 }
 

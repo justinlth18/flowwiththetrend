@@ -1,5 +1,5 @@
-'use client';
 // @ts-nocheck
+'use client';
 
 import { useEffect, useRef } from 'react';
 const MAX_COLORS = 8;
@@ -444,9 +444,9 @@ const GradientASCII = ({
   intro = true,
   lightMode = false,
   fontFamily = DEFAULT_FONT,
-  dpr,
+  dpr = undefined,
   className = '',
-  style,
+  style = undefined,
   ...rest
 }) => {
   const containerRef = useRef(null);

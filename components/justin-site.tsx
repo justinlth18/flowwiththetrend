@@ -310,7 +310,7 @@ function TechPhoto({ src, on, delay = 0 }: { src: string; on: boolean; delay?: n
     let dead = false;
 
     function paint(now: number, started: number) {
-      if (dead) return;
+      if (dead || !canvas) return;
       const ctx = canvas.getContext("2d");
       const probe = sample.getContext("2d", { willReadFrequently: true });
       if (!ctx || !probe || !image.complete || image.naturalWidth === 0) {

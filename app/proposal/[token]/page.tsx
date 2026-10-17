@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
+import { PhotoGrid } from "@/components/photo-grid";
 import { writeAudit } from "@/lib/proposals";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
@@ -53,16 +54,9 @@ export default async function ProposalPage({ params }: { params: Promise<{ token
         <h1 className="plain-title">{proposal.title}</h1>
         <p className="lede">{proposal.description}</p>
         <p>This link closes on {closes}. The pictures are marked with the studio name.</p>
-        <div className="proposal-photos">
-          {images.map((image) => (
-            <img
-              key={image.id}
-              src={`/api/proposal/${token}/image/${image.id}`}
-              alt=""
-              draggable={false}
-            />
-          ))}
-        </div>
+        <PhotoGrid
+          images={images.map((image) => ({ id: image.id, src: `/api/proposal/${token}/image/${image.id}` }))}
+        />
       </article>
     </main>
   );

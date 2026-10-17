@@ -1,10 +1,18 @@
 import { envValue } from "@/lib/notify";
 
-export async function sendDeskCode(email: string, code: string) {
-  const apiKey = envValue("RESEND_API_KEY");
-  const from = envValue("INQUIRY_FROM_EMAIL") || "Flow With The Trend <onboarding@resend.dev>";
-  if (!apiKey) return { sent: false, error: "Email is not configured on the server." };
+const testFrom = "Flow With The Trend <onboarding@resend.dev>";
 
+function resendMessage(detail: string) {
+  try {
+    const body = JSON.parse(detail) as { message?: string };
+    if (body.message) return body.message;
+  } catch {
+    /* Resend sometimes returns plain text. */
+  }
+  return detail.replace(/\s+/g, " ").slice(0, 240);
+}
+
+async function postCode(apiKey: string, from: string, email: string, code: string) {
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -30,9 +38,18 @@ export async function sendDeskCode(email: string, code: string) {
     }),
   });
 
-  if (!response.ok) {
-    const detail = await response.text();
-    return { sent: false, error: detail.slice(0, 300) };
-  }
-  return { sent: true, error: "" };
+  if (response.ok) return { sent: true, error: "" };
+  const detail = await response.text();
+  return { sent: false, error: resendMessage(detail) };
+}
+
+export async function sendDeskCode(email: string, code: string) {
+  const apiKey = envValue("RESEND_API_KEY");
+  const configured = envValue("INQUIRY_FROM_EMAIL");
+  if (!apiKey) return { sent: false, error: "Add RESEND_API_KEY on Vercel, then redeploy." };
+
+  const first = await postCode(apiKey, configured || testFrom, email, code);
+  if (first.sent || !configured || configured === testFrom) return first;
+  if (!/from|domain|verif/i.test(first.error)) return first;
+  return postCode(apiKey, testFrom, email, code);
 }

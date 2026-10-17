@@ -15,6 +15,30 @@ export function clientAddress(request: Request) {
   return (request.headers.get("x-forwarded-for") ?? "unknown").split(",")[0]?.trim() || "unknown";
 }
 
+const proposalSelect =
+  "id, created_at, client_name, title, description, token, expires_at, proposal_images(id, sort_order)";
+
+export async function listDeskProposals() {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return [];
+  const { data } = await supabase.from("proposals").select(proposalSelect).order("created_at", { ascending: false });
+  return data ?? [];
+}
+
+export async function loadDeskProposal(id: string) {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return null;
+  const { data: proposal } = await supabase.from("proposals").select(proposalSelect).eq("id", id).maybeSingle();
+  if (!proposal) return null;
+  const { data: audit } = await supabase
+    .from("proposal_audit")
+    .select("id, proposal_id, created_at, event, detail, ip")
+    .eq("proposal_id", id)
+    .order("created_at", { ascending: false })
+    .limit(50);
+  return { proposal, audit: audit ?? [] };
+}
+
 export async function writeAudit(
   proposalId: string,
   event: "created" | "viewed" | "regenerated" | "expired",

@@ -87,9 +87,10 @@ export async function POST(request: Request) {
 
   const mailed = await sendDeskCode(email, code);
   if (!mailed.sent) {
+    console.error("desk code email failed", mailed.error);
     await supabase.from("desk_signups").delete().eq("email", email);
     return NextResponse.json(
-      { ok: false, error: "The code could not be emailed. Check the Resend sender and try again." },
+      { ok: false, error: mailed.error || "The code could not be emailed." },
       { status: 502 },
     );
   }

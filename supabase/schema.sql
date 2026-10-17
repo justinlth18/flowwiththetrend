@@ -68,7 +68,7 @@ revoke all on table public.proposal_images from anon, authenticated;
 revoke all on table public.proposal_audit from anon, authenticated;
 
 grant select, insert, update on table public.proposals to service_role;
-grant select, insert on table public.proposal_images to service_role;
+grant select, insert, delete on table public.proposal_images to service_role;
 grant select, insert on table public.proposal_audit to service_role;
 
 create index if not exists proposals_token_idx on public.proposals (token);
@@ -104,5 +104,10 @@ grant select, insert, update, delete on table public.desk_signups to service_rol
 insert into storage.buckets (id, name, public)
 values ('proposals', 'proposals', false)
 on conflict (id) do update set public = false;
+
+alter table public.proposal_audit drop constraint if exists proposal_audit_event_check;
+alter table public.proposal_audit
+  add constraint proposal_audit_event_check
+  check (event in ('created', 'viewed', 'regenerated', 'expired', 'edited'));
 
 notify pgrst, 'reload schema';

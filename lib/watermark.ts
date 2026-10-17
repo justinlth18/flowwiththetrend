@@ -1,10 +1,14 @@
+import { readFileSync } from "fs";
+import path from "path";
 import sharp from "sharp";
 
+const brandFont = readFileSync(path.join(process.cwd(), "lib/fonts/LilitaOne-Regular.ttf")).toString("base64");
+
 function overlay(width: number, height: number) {
-  const font = Math.max(22, Math.round(Math.min(width, height) / 13));
+  const font = Math.max(28, Math.round(Math.min(width, height) / 11));
   const texts: string[] = [];
-  for (let y = -height; y < height * 2; y += font * 3.2) {
-    for (let x = -width; x < width * 2; x += font * 12) {
+  for (let y = -height; y < height * 2; y += font * 2.6) {
+    for (let x = -width; x < width * 2; x += font * 13.5) {
       texts.push(
         `<text x="${x}" y="${y}" transform="rotate(-24 ${x} ${y})">FLOW WITH THE TREND</text>`,
       );
@@ -12,19 +16,25 @@ function overlay(width: number, height: number) {
   }
 
   return Buffer.from(
-    `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+    `<?xml version="1.0" encoding="UTF-8"?>
+    <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
       <defs>
+        <style>
+          @font-face {
+            font-family: "Brand";
+            src: url("data:font/ttf;base64,${brandFont}");
+          }
+        </style>
         <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#2c2c2c"/>
-          <stop offset="40%" stop-color="#8d8d8d"/>
-          <stop offset="47%" stop-color="#f7f7f7"/>
-          <stop offset="50%" stop-color="#ffffff"/>
-          <stop offset="53%" stop-color="#f2f2f2"/>
-          <stop offset="60%" stop-color="#7a7a7a"/>
-          <stop offset="100%" stop-color="#242424"/>
+          <stop offset="0%" stop-color="#d7d7d7"/>
+          <stop offset="38%" stop-color="#f3f3f3"/>
+          <stop offset="47%" stop-color="#ffffff"/>
+          <stop offset="53%" stop-color="#ffffff"/>
+          <stop offset="62%" stop-color="#cfcfcf"/>
+          <stop offset="100%" stop-color="#8f8f8f"/>
         </linearGradient>
       </defs>
-      <g opacity="0.5" fill="url(#shine)" font-family="Arial, Helvetica, sans-serif" font-size="${font}" font-weight="700" letter-spacing="0.14em">
+      <g font-family="Brand" font-size="${font}" letter-spacing="0.04em" fill="url(#shine)" opacity="0.5">
         ${texts.join("")}
       </g>
     </svg>`,
@@ -40,9 +50,11 @@ export async function watermarkImage(input: Buffer) {
   const width = Math.max(1, Math.round(sourceWidth * scale));
   const height = Math.max(1, Math.round(sourceHeight * scale));
 
-  return prepared
-    .resize(width, height, { fit: "inside", withoutEnlargement: true })
-    .composite([{ input: overlay(width, height), blend: "over" }])
+  const resized = await prepared.resize(width, height, { fit: "inside", withoutEnlargement: true }).jpeg().toBuffer();
+  const sized = await sharp(resized).metadata();
+
+  return sharp(resized)
+    .composite([{ input: overlay(sized.width ?? width, sized.height ?? height), blend: "over" }])
     .jpeg({ quality: 82, mozjpeg: true })
     .toBuffer();
 }

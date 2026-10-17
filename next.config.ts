@@ -3,6 +3,10 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  outputFileTracingIncludes: {
+    "/api/desk/proposals": ["./lib/fonts/LilitaOne-Regular.ttf"],
+    "/api/desk/proposals/[id]": ["./lib/fonts/LilitaOne-Regular.ttf"],
+  },
   async headers() {
     return [
       {

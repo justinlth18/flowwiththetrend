@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { DeskHeader } from "@/components/desk-header";
 import { DeskLogin } from "@/components/desk-login";
+import { DeskProposalTable } from "@/components/desk-proposal-table";
 import { deskConfigured, deskCookie, sessionValid } from "@/lib/desk-auth";
 import { deskWhen } from "@/lib/desk-time";
 import { listDeskProposals } from "@/lib/proposals";
@@ -39,37 +40,16 @@ export default async function DeskProposalsPage() {
           <p>No proposals yet. Create one and it will show up in this table.</p>
         </section>
       ) : (
-        <div className="desk-table-wrap">
-          <table className="desk-table">
-            <thead>
-              <tr>
-                <th>Client</th>
-                <th>Title</th>
-                <th>Created</th>
-                <th>Closes</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {proposals.map((proposal) => {
-                const closed = new Date(proposal.expires_at).getTime() < Date.now();
-                return (
-                  <tr key={proposal.id}>
-                    <td>{proposal.client_name}</td>
-                    <td>
-                      <a href={`/desk/proposals/${proposal.id}`}>{proposal.title}</a>
-                    </td>
-                    <td>{deskWhen(proposal.created_at)}</td>
-                    <td>{deskWhen(proposal.expires_at)}</td>
-                    <td>
-                      <span className={closed ? "desk-status is-closed" : "desk-status"}>{closed ? "closed" : "open"}</span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <DeskProposalTable
+          rows={proposals.map((proposal) => ({
+            id: proposal.id,
+            client: proposal.client_name,
+            title: proposal.title,
+            created: deskWhen(proposal.created_at),
+            closes: deskWhen(proposal.expires_at),
+            closed: new Date(proposal.expires_at).getTime() < Date.now(),
+          }))}
+        />
       )}
     </main>
   );

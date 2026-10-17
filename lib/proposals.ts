@@ -41,7 +41,7 @@ export async function loadDeskProposal(id: string) {
 
 export async function writeAudit(
   proposalId: string,
-  event: "created" | "viewed" | "regenerated" | "expired",
+  event: "created" | "viewed" | "regenerated" | "expired" | "edited",
   ip: string,
   detail = "",
 ) {

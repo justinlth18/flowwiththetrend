@@ -25,7 +25,7 @@ export function PhotoGrid({ images }: { images: { id: string; src: string }[] })
       </div>
       {open ? (
         <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label="Enlarged picture" onClick={() => setOpen(null)}>
-          <img src={open} alt="" onClick={(event) => event.stopPropagation()} />
+          <img src={open} alt="" />
         </div>
       ) : null}
     </>

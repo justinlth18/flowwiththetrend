@@ -19,7 +19,18 @@ for (const char of phrase) {
 }
 const phraseWidth = cursor;
 
-function overlay(width: number, height: number) {
+function averageLightness(channels: { mean: number }[]) {
+  if (channels.length < 3) return channels[0]?.mean ?? 0;
+  const [red, green, blue] = channels;
+  return 0.2126 * red.mean + 0.7152 * green.mean + 0.0722 * blue.mean;
+}
+
+async function pictureIsLight(image: Buffer) {
+  const { channels } = await sharp(image).stats();
+  return averageLightness(channels) >= 128;
+}
+
+function overlay(width: number, height: number, light: boolean) {
   const font = Math.max(26, Math.round(Math.min(width, height) / 16));
   const scale = font / phraseSize;
   const stepX = phraseWidth * scale + font * 8;
@@ -32,16 +43,20 @@ function overlay(width: number, height: number) {
       );
     }
   }
+  const edge = light ? "#2a2a2a" : "#d8d8d8";
+  const mid = light ? "#141414" : "#f4f4f4";
+  const core = light ? "#000000" : "#ffffff";
 
   return Buffer.from(
     `<?xml version="1.0" encoding="UTF-8"?>
     <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#f4f4f4"/>
-          <stop offset="46%" stop-color="#ffffff"/>
-          <stop offset="54%" stop-color="#ffffff"/>
-          <stop offset="100%" stop-color="#d8d8d8"/>
+          <stop offset="0%" stop-color="${edge}"/>
+          <stop offset="42%" stop-color="${mid}"/>
+          <stop offset="50%" stop-color="${core}"/>
+          <stop offset="58%" stop-color="${mid}"/>
+          <stop offset="100%" stop-color="${edge}"/>
         </linearGradient>
       </defs>
       <g fill="url(#shine)" opacity="0.22">${marks.join("")}</g>
@@ -60,7 +75,8 @@ export async function watermarkImage(input: Buffer) {
 
   const resized = await prepared.resize(width, height, { fit: "inside", withoutEnlargement: true }).jpeg().toBuffer();
   const sized = await sharp(resized).metadata();
-  const mark = await sharp(overlay(sized.width ?? width, sized.height ?? height)).png().toBuffer();
+  const light = await pictureIsLight(resized);
+  const mark = await sharp(overlay(sized.width ?? width, sized.height ?? height, light)).png().toBuffer();
 
   return sharp(resized)
     .composite([{ input: mark, blend: "over" }])

@@ -1,7 +1,9 @@
 import { readFileSync } from "fs";
 import path from "path";
-import opentype from "opentype.js";
+import * as opentypeModule from "opentype.js";
 import sharp from "sharp";
+
+const opentype = ("default" in opentypeModule ? opentypeModule.default : opentypeModule) ?? opentypeModule;
 
 const fontFile = readFileSync(path.join(process.cwd(), "lib/fonts/LilitaOne-Regular.ttf"));
 const brandFont = opentype.parse(fontFile.buffer.slice(fontFile.byteOffset, fontFile.byteOffset + fontFile.byteLength));

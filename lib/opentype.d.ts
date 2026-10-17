@@ -13,7 +13,8 @@ declare module "opentype.js" {
 
   const opentype: {
     parse(buffer: ArrayBuffer): BrandFont;
+    default?: { parse(buffer: ArrayBuffer): BrandFont };
   };
 
-  export default opentype;
+  export = opentype;
 }

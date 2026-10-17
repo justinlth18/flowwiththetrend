@@ -26,12 +26,12 @@ function overlay(width: number, height: number) {
           }
         </style>
         <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#d7d7d7"/>
-          <stop offset="38%" stop-color="#f3f3f3"/>
-          <stop offset="47%" stop-color="#ffffff"/>
-          <stop offset="53%" stop-color="#ffffff"/>
-          <stop offset="62%" stop-color="#cfcfcf"/>
-          <stop offset="100%" stop-color="#8f8f8f"/>
+          <stop offset="0%" stop-color="#6a6a6a"/>
+          <stop offset="36%" stop-color="#dcdcdc"/>
+          <stop offset="46%" stop-color="#ffffff"/>
+          <stop offset="54%" stop-color="#ffffff"/>
+          <stop offset="64%" stop-color="#c4c4c4"/>
+          <stop offset="100%" stop-color="#4a4a4a"/>
         </linearGradient>
       </defs>
       <g font-family="Brand" font-size="${font}" letter-spacing="0.04em" fill="url(#shine)" opacity="0.5">
@@ -52,9 +52,10 @@ export async function watermarkImage(input: Buffer) {
 
   const resized = await prepared.resize(width, height, { fit: "inside", withoutEnlargement: true }).jpeg().toBuffer();
   const sized = await sharp(resized).metadata();
+  const mark = await sharp(overlay(sized.width ?? width, sized.height ?? height)).png().toBuffer();
 
   return sharp(resized)
-    .composite([{ input: overlay(sized.width ?? width, sized.height ?? height), blend: "over" }])
+    .composite([{ input: mark, blend: "over" }])
     .jpeg({ quality: 82, mozjpeg: true })
     .toBuffer();
 }

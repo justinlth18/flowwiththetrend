@@ -1471,13 +1471,23 @@ button, input, select, textarea { font: inherit; }
   background: rgba(0, 0, 0, 0.88);
   cursor: zoom-out;
 }
+.photo-lightbox.is-zoomed { display: block; overflow: auto; }
 .photo-lightbox img {
   max-width: min(1100px, 100%);
   max-height: calc(100vh - 48px);
   border: 3px solid #fffdf2;
   border-radius: 18px;
   box-shadow: 8px 8px 0 var(--yellow);
-  cursor: zoom-out;
+  cursor: zoom-in;
+}
+.photo-lightbox img.is-zoomed {
+  width: calc(100vw * var(--zoom));
+  max-width: none;
+  max-height: none;
+  height: auto;
+}
+@media (max-width: 800px) {
+  .photo-lightbox img { cursor: zoom-out; }
 }
 .desk-link { margin: 0; font-weight: 700; word-break: break-all; }
 .desk-actions { display: flex; flex-wrap: wrap; gap: 8px; }

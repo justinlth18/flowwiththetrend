@@ -40,12 +40,18 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     pathname.startsWith("/portfolios/lee-kar-meng") ||
     pathname.startsWith("/portfolios/nicson-chang-zhiyang") ||
     pathname.startsWith("/portfolios/justin");
+  const quiet = pathname.startsWith("/desk") || pathname.startsWith("/proposal");
 
   return (
     <html lang="en" className={solo ? undefined : `${fredoka.variable} ${lilita.variable}`}>
       <body>
         {solo ? (
           children
+        ) : quiet ? (
+          <>
+            <ThemeBackground />
+            <div id="content">{children}</div>
+          </>
         ) : (
           <>
             <ThemeBackground />

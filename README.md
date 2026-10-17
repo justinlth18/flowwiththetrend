@@ -32,7 +32,9 @@ The service role key stays on the server. Do not prefix it with `NEXT_PUBLIC_`.
 
 Without those keys, `npm run dev` still accepts the form and shows a developer note instead of saving. A production build without keys refuses to store the message.
 
-Free-plan projects pause after about a week of no traffic. Opening the project in the Supabase dashboard wakes it up.
+The private desk is at `/desk`. Log in with the email and password from your account. New accounts can be created only from `/desk/register/<DESK_INVITE_TOKEN>`. That link is not shown on the site. A six-digit code is emailed before the account is saved. Set `DESK_SESSION_SECRET` and `DESK_INVITE_TOKEN` in `.env.local` and on Vercel. Run the proposal and desk tables at the bottom of `supabase/schema.sql` in the SQL editor before the first account. Each client link lasts 7 days. Making a new link stops the old one. Pictures are watermarked when you upload them.
+
+Free-plan projects pause after about a week of no traffic. Vercel calls `/api/keepalive` once a day, which counts as activity. Set `CRON_SECRET` on the Vercel project to the same value the cron sends. If Supabase has already paused the project, restore it from the dashboard first. A paused project does not wake up from this call.
 
 ## Email
 

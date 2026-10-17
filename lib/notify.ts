@@ -126,7 +126,7 @@ function briefHtml(inquiry: InquiryInput) {
 </html>`;
 }
 
-function envValue(name: string) {
+export function envValue(name: string) {
   return process.env[name]?.trim().replace(/^["']|["']$/g, "") ?? "";
 }
 

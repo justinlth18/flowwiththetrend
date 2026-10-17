@@ -5,5 +5,7 @@ out
 .env
 .env.local
 .env*.local
+.desk-invite
+.desk-session
 .DS_Store
 *.tsbuildinfo

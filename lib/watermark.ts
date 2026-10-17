@@ -20,10 +20,10 @@ for (const char of phrase) {
 const phraseWidth = cursor;
 
 function overlay(width: number, height: number) {
-  const font = Math.max(28, Math.round(Math.min(width, height) / 11));
+  const font = Math.max(26, Math.round(Math.min(width, height) / 16));
   const scale = font / phraseSize;
-  const stepX = phraseWidth * scale + font * 1.6;
-  const stepY = font * 2.5;
+  const stepX = phraseWidth * scale + font * 8;
+  const stepY = font * 7;
   const marks: string[] = [];
   for (let y = -height; y < height * 2; y += stepY) {
     for (let x = -width; x < width * 2; x += stepX) {
@@ -38,15 +38,13 @@ function overlay(width: number, height: number) {
     <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#5c5c5c"/>
-          <stop offset="34%" stop-color="#d0d0d0"/>
+          <stop offset="0%" stop-color="#f4f4f4"/>
           <stop offset="46%" stop-color="#ffffff"/>
           <stop offset="54%" stop-color="#ffffff"/>
-          <stop offset="66%" stop-color="#bdbdbd"/>
-          <stop offset="100%" stop-color="#3f3f3f"/>
+          <stop offset="100%" stop-color="#d8d8d8"/>
         </linearGradient>
       </defs>
-      <g fill="url(#shine)" opacity="0.5">${marks.join("")}</g>
+      <g fill="url(#shine)" opacity="0.22">${marks.join("")}</g>
     </svg>`,
   );
 }

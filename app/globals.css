@@ -1486,6 +1486,7 @@ button, input, select, textarea { font: inherit; }
   max-height: none;
   height: auto;
 }
+.photo-lightbox img.is-max { cursor: zoom-out; }
 @media (max-width: 800px) {
   .photo-lightbox img { cursor: zoom-out; }
 }

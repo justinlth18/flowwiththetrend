@@ -1,7 +1,8 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { deskCookie, sessionValid } from "@/lib/desk-auth";
-import { clientAddress, writeAudit } from "@/lib/proposals";
+import { proposalTextLimit } from "@/lib/proposal-markup";
+import { clientAddress, deleteProposal, writeAudit } from "@/lib/proposals";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { watermarkImage } from "@/lib/watermark";
 
@@ -29,8 +30,11 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
   if (title.length < 2 || title.length > 120) {
     return NextResponse.json({ ok: false, error: "Add a title." }, { status: 400 });
   }
-  if (description.length < 10 || description.length > 4000) {
+  if (description.length < 10) {
     return NextResponse.json({ ok: false, error: "Write a description of at least a sentence." }, { status: 400 });
+  }
+  if (description.length > proposalTextLimit) {
+    return NextResponse.json({ ok: false, error: "Keep the description under 12,000 characters." }, { status: 400 });
   }
   if (files.some((file) => !imageTypes.has(file.type) || file.size > 6 * 1024 * 1024)) {
     return NextResponse.json({ ok: false, error: "Use JPG, PNG, or WebP pictures under 6 MB." }, { status: 400 });
@@ -94,5 +98,21 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
   }
 
   await writeAudit(id, "edited", clientAddress(request), clientName);
+  return NextResponse.json({ ok: true });
+}
+
+export async function DELETE(_request: Request, context: { params: Promise<{ id: string }> }) {
+  const jar = await cookies();
+  if (!sessionValid(jar.get(deskCookie)?.value)) {
+    return NextResponse.json({ ok: false }, { status: 401 });
+  }
+  if (!getSupabaseAdmin()) return NextResponse.json({ ok: false, error: "The desk is not set up yet." }, { status: 503 });
+
+  const { id } = await context.params;
+  const removed = await deleteProposal(id);
+  if (!removed.ok) {
+    const missing = removed.error === "That proposal was not found.";
+    return NextResponse.json({ ok: false, error: removed.error }, { status: missing ? 404 : 502 });
+  }
   return NextResponse.json({ ok: true });
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import { PhotoGrid } from "@/components/photo-grid";
+import { ProposalDocument } from "@/components/proposal-document";
 import { writeAudit } from "@/lib/proposals";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
@@ -52,9 +52,9 @@ export default async function ProposalPage({ params }: { params: Promise<{ token
       <article className="sheet sheet-yellow proposal-doc">
         <p className="kicker">Flow With The Trend · for {proposal.client_name}</p>
         <h1 className="plain-title">{proposal.title}</h1>
-        <p className="lede">{proposal.description}</p>
         <p>This link closes on {closes}. The pictures are marked with the studio name.</p>
-        <PhotoGrid
+        <ProposalDocument
+          description={proposal.description}
           images={images.map((image) => ({ id: image.id, src: `/api/proposal/${token}/image/${image.id}` }))}
         />
       </article>

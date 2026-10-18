@@ -7,6 +7,24 @@ export function DeskBoard() {
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
 
+  async function useTemplate() {
+    const confirmed = window.confirm(
+      "Save the HR portal proposal? Any proposal already on the desk is permanently deleted.",
+    );
+    if (!confirmed) return;
+    setPending(true);
+    setError("");
+    const response = await fetch("/api/desk/proposals/template", { method: "POST" });
+    const body = (await response.json().catch(() => null)) as { error?: string; id?: string; warning?: string } | null;
+    setPending(false);
+    if (!response.ok || !body?.id) {
+      setError(body?.error ?? "That proposal was not saved.");
+      return;
+    }
+    if (body.warning) window.alert(body.warning);
+    window.location.assign(`/desk/proposals/${body.id}`);
+  }
+
   async function createProposal(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setPending(true);
@@ -26,6 +44,17 @@ export function DeskBoard() {
     <main className="desk-wrap">
       <DeskHeader title="New proposal" action={{ href: "/desk/proposals", label: "your proposals" }} />
 
+      <section className="sheet sheet-yellow desk-card">
+        <p className="kicker">template</p>
+        <p>
+          Statement of work for Schmidt BioMedTech, with the six MBO and salary screens placed in the document. Saving it
+          removes the proposal already on the desk.
+        </p>
+        <button className="btn" type="button" onClick={() => void useTemplate()} disabled={pending}>
+          {pending ? "preparing the document" : "use this template"}
+        </button>
+      </section>
+
       <form className="sheet sheet-yellow desk-card" onSubmit={createProposal}>
         <p>Pictures are marked with the studio name before they are stored. The client link lasts 7 days.</p>
         <div className="field-row">
@@ -40,7 +69,7 @@ export function DeskBoard() {
         </div>
         <label className="field">
           Description
-          <textarea name="description" required minLength={10} maxLength={4000} />
+          <textarea name="description" required minLength={10} maxLength={12000} />
         </label>
         <label className="field">
           Pictures

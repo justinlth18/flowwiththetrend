@@ -39,6 +39,33 @@ export async function loadDeskProposal(id: string) {
   return { proposal, audit: audit ?? [] };
 }
 
+export async function deleteProposal(id: string) {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return { ok: false as const, error: "The desk is not set up yet." };
+
+  const { data: images, error: readError } = await supabase
+    .from("proposal_images")
+    .select("storage_path")
+    .eq("proposal_id", id);
+  if (readError) return { ok: false as const, error: "That proposal could not be removed." };
+
+  const paths = (images ?? []).map((image) => image.storage_path).filter(Boolean);
+  if (paths.length) await supabase.storage.from("proposals").remove(paths);
+
+  const removed = await supabase.from("proposals").delete().eq("id", id).select("id");
+  if (removed.error) {
+    const denied = removed.error.code === "42501" || /permission|privilege/i.test(removed.error.message);
+    return {
+      ok: false as const,
+      error: denied
+        ? "Run the latest SQL in supabase/schema.sql so a proposal can be deleted."
+        : "That proposal could not be removed.",
+    };
+  }
+  if (!removed.data?.length) return { ok: false as const, error: "That proposal was not found." };
+  return { ok: true as const };
+}
+
 export async function writeAudit(
   proposalId: string,
   event: "created" | "viewed" | "regenerated" | "expired" | "edited",

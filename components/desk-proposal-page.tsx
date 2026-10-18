@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { DeskHeader } from "@/components/desk-header";
-import { PhotoGrid } from "@/components/photo-grid";
+import { ProposalDocument } from "@/components/proposal-document";
 import { deskWhen } from "@/lib/desk-time";
+import { proposalTextLimit } from "@/lib/proposal-markup";
 
 type ImageRow = { id: string; sort_order: number };
 type Proposal = {
@@ -80,6 +81,21 @@ export function DeskProposalPage({ proposal, audit }: { proposal: Proposal; audi
     router.refresh();
   }
 
+  async function remove() {
+    if (!window.confirm("Delete this proposal and its pictures? This cannot be undone.")) return;
+    setPending(true);
+    setError("");
+    const response = await fetch(`/api/desk/proposals/${proposal.id}`, { method: "DELETE" });
+    const body = (await response.json().catch(() => null)) as { error?: string } | null;
+    setPending(false);
+    if (!response.ok) {
+      setError(body?.error ?? "The proposal was not deleted.");
+      return;
+    }
+    router.push("/desk/proposals");
+    router.refresh();
+  }
+
   async function regenerate() {
     setError("");
     const response = await fetch(`/api/desk/proposals/${proposal.id}/regenerate`, { method: "POST" });
@@ -110,8 +126,9 @@ export function DeskProposalPage({ proposal, audit }: { proposal: Proposal; audi
             </div>
             <label className="field">
               Description
-              <textarea name="description" value={description} onChange={(event) => setDescription(event.target.value)} required minLength={10} maxLength={4000} />
+              <textarea name="description" value={description} onChange={(event) => setDescription(event.target.value)} required minLength={10} maxLength={proposalTextLimit} />
             </label>
+            <p className="desk-note">## starts a section, ### a smaller heading, a line of | cells makes a table, and {"{{1|caption}}"} places picture 1.</p>
             <div className="proposal-photos">
               {visible.map((image) => (
                 <div className="photo-edit" key={image.id}>
@@ -140,8 +157,10 @@ export function DeskProposalPage({ proposal, audit }: { proposal: Proposal; audi
             <p>
               {proposal.client_name} · created {deskWhen(proposal.created_at)} · closes {deskWhen(proposal.expires_at)}
             </p>
-            <p>{proposal.description}</p>
-            <PhotoGrid images={images.map((image) => ({ id: image.id, src: `/api/desk/images/${image.id}` }))} />
+            <ProposalDocument
+              description={proposal.description}
+              images={images.map((image) => ({ id: image.id, src: `/api/desk/images/${image.id}` }))}
+            />
           </>
         )}
         <p className="desk-link">/proposal/{proposal.token}</p>
@@ -156,6 +175,9 @@ export function DeskProposalPage({ proposal, audit }: { proposal: Proposal; audi
           </button>
           <button className="btn btn-green" type="button" onClick={() => void regenerate()}>
             new 7-day link
+          </button>
+          <button className="btn btn-pink" type="button" onClick={() => void remove()} disabled={pending}>
+            delete
           </button>
         </div>
         {error ? <p className="form-error">{error}</p> : null}

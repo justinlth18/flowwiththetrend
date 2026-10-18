@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { deskCookie, sessionValid } from "@/lib/desk-auth";
 import { clientAddress, expiryFromNow, newProposalToken, writeAudit } from "@/lib/proposals";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { proposalTextLimit } from "@/lib/proposal-markup";
 import { watermarkImage } from "@/lib/watermark";
 
 const imageTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
@@ -57,8 +58,11 @@ export async function POST(request: Request) {
   if (title.length < 2 || title.length > 120) {
     return NextResponse.json({ ok: false, error: "Add a title." }, { status: 400 });
   }
-  if (description.length < 10 || description.length > 4000) {
+  if (description.length < 10) {
     return NextResponse.json({ ok: false, error: "Write a description of at least a sentence." }, { status: 400 });
+  }
+  if (description.length > proposalTextLimit) {
+    return NextResponse.json({ ok: false, error: "Keep the description under 12,000 characters." }, { status: 400 });
   }
   if (files.length < 1 || files.length > 6) {
     return NextResponse.json({ ok: false, error: "Add between 1 and 6 pictures." }, { status: 400 });

@@ -13,7 +13,13 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function DeskProposalRoute({ params }: { params: Promise<{ id: string }> }) {
+export default async function DeskProposalRoute({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ edit?: string }>;
+}) {
   if (!deskConfigured()) {
     return (
       <main className="desk-wrap">
@@ -29,8 +35,9 @@ export default async function DeskProposalRoute({ params }: { params: Promise<{ 
   if (!sessionValid(jar.get(deskCookie)?.value)) return <DeskLogin />;
 
   const { id } = await params;
+  const { edit } = await searchParams;
   const loaded = await loadDeskProposal(id);
   if (!loaded) notFound();
 
-  return <DeskProposalPage proposal={loaded.proposal} audit={loaded.audit} />;
+  return <DeskProposalPage proposal={loaded.proposal} audit={loaded.audit} startEditing={edit === "1"} />;
 }

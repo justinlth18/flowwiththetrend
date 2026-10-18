@@ -34,11 +34,19 @@ const eventLabel: Record<string, string> = {
   edited: "Edited",
 };
 
-export function DeskProposalPage({ proposal, audit }: { proposal: Proposal; audit: AuditRow[] }) {
+export function DeskProposalPage({
+  proposal,
+  audit,
+  startEditing = false,
+}: {
+  proposal: Proposal;
+  audit: AuditRow[];
+  startEditing?: boolean;
+}) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(startEditing);
   const [pending, setPending] = useState(false);
   const [clientName, setClientName] = useState(proposal.client_name);
   const [title, setTitle] = useState(proposal.title);

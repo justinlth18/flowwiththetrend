@@ -50,8 +50,6 @@ export async function deleteProposal(id: string) {
   if (readError) return { ok: false as const, error: "That proposal could not be removed." };
 
   const paths = (images ?? []).map((image) => image.storage_path).filter(Boolean);
-  if (paths.length) await supabase.storage.from("proposals").remove(paths);
-
   const removed = await supabase.from("proposals").delete().eq("id", id).select("id");
   if (removed.error) {
     const denied = removed.error.code === "42501" || /permission|privilege/i.test(removed.error.message);
@@ -63,6 +61,7 @@ export async function deleteProposal(id: string) {
     };
   }
   if (!removed.data?.length) return { ok: false as const, error: "That proposal was not found." };
+  if (paths.length) await supabase.storage.from("proposals").remove(paths);
   return { ok: true as const };
 }
 

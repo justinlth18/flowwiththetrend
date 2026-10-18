@@ -107,14 +107,16 @@ export function ProposalDocument({ description, images }: { description: string;
     }
 
     if (block.type === "image") {
-      const image = images[block.index - 1];
-      used.add(block.index - 1);
-      if (image) {
-        nodes.push(
-          <PhotoGrid key={`${image.id}-${block.index}`} variant="figures" images={[{ ...image, caption: block.caption }]} />,
-        );
+      const group: Shot[] = [];
+      const start = cursor;
+      while (blocks[cursor]?.type === "image") {
+        const shot = blocks[cursor] as Extract<ProposalBlock, { type: "image" }>;
+        const image = images[shot.index - 1];
+        used.add(shot.index - 1);
+        if (image) group.push({ ...image, caption: shot.caption });
+        cursor += 1;
       }
-      cursor += 1;
+      if (group.length) nodes.push(<PhotoGrid key={`shots-${start}`} images={group} />);
       continue;
     }
 
@@ -123,7 +125,7 @@ export function ProposalDocument({ description, images }: { description: string;
   }
 
   const rest = images.filter((_, index) => !used.has(index));
-  if (rest.length) nodes.push(<PhotoGrid key="rest" variant="figures" images={rest} />);
+  if (rest.length) nodes.push(<PhotoGrid key="rest" images={rest} />);
 
   return <div className="sow">{nodes}</div>;
 }

@@ -53,6 +53,9 @@ export default async function ProposalPage({ params }: { params: Promise<{ token
         <p className="kicker">Flow With The Trend · for {proposal.client_name}</p>
         <h1 className="plain-title">{proposal.title}</h1>
         <p>This link closes on {closes}. The pictures are marked with the studio name.</p>
+        <a className="btn" href={`/?proposal=${encodeURIComponent(token)}`}>
+          View the website
+        </a>
         <ProposalDocument
           description={proposal.description}
           images={images.map((image) => ({ id: image.id, src: `/api/proposal/${token}/image/${image.id}` }))}

@@ -1478,7 +1478,9 @@ button, input, select, textarea { font: inherit; }
 }
 .photo-lightbox.is-zoomed { display: block; overflow: auto; }
 .photo-lightbox img {
-  max-width: min(1100px, 100%);
+  width: auto;
+  height: auto;
+  max-width: min(100%, calc(100vw - 48px));
   max-height: calc(100vh - 48px);
   border: 3px solid #fffdf2;
   border-radius: 18px;
@@ -1507,7 +1509,10 @@ button, input, select, textarea { font: inherit; }
   border-radius: 22px;
   box-shadow: 6px 6px 0 var(--ink);
 }
-.desk-table { width: 100%; border-collapse: collapse; min-width: 640px; }
+.desk-table { width: 100%; border-collapse: collapse; min-width: 760px; }
+.desk-table-error { margin: 0; padding: 12px 16px 0; }
+.desk-row-actions { display: flex; gap: 6px; }
+.desk-row-actions .btn { min-height: 34px; padding: 0 12px; font-size: 0.85rem; }
 .desk-table th, .desk-table td {
   padding: 14px 16px;
   text-align: left;
@@ -1551,6 +1556,7 @@ button, input, select, textarea { font: inherit; }
 }
 .desk-status.is-closed { background: var(--pink); }
 .proposal-doc { display: grid; gap: 14px; }
+.proposal-doc > .btn { justify-self: start; }
 .desk-wrap:has(.sow) { width: min(1120px, calc(100% - 24px)); }
 .sow { display: grid; gap: 14px; }
 .sow h2, .sow h3, .sow td, .sow figcaption { color: var(--ink); }
@@ -1591,19 +1597,31 @@ button, input, select, textarea { font: inherit; }
   font-weight: 650;
 }
 .sow-table th { background: var(--ink); color: var(--yellow); }
-.sow-figures { display: grid; gap: 14px; }
-.sow-figure { display: grid; gap: 8px; margin: 0; }
-.sow-figure button {
-  padding: 0;
-  border: 3px solid var(--ink);
-  border-radius: 16px;
+.sow-shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+.sow-shot { display: grid; gap: 8px; margin: 0; }
+.sow-shot .photo-thumb { width: 100%; }
+.sow-shot img {
+  height: 150px;
+  object-fit: contain;
   background: #fff;
-  overflow: hidden;
-  cursor: zoom-in;
-  box-shadow: 4px 4px 0 var(--ink);
 }
-.sow-figure img { display: block; width: 100%; height: auto; }
-.sow-figure figcaption { font-weight: 800; }
+.sow-shot figcaption { font-weight: 800; }
+.proposal-return {
+  position: fixed;
+  z-index: 50;
+  right: 16px;
+  bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--yellow);
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 4px 4px 0 var(--green);
+}
 @media (max-width: 800px) {
   .sow-meta, .sow-fees { grid-template-columns: 1fr; }
 }

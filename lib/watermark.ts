@@ -73,13 +73,16 @@ export async function watermarkImage(input: Buffer) {
   const width = Math.max(1, Math.round(sourceWidth * scale));
   const height = Math.max(1, Math.round(sourceHeight * scale));
 
-  const resized = await prepared.resize(width, height, { fit: "inside", withoutEnlargement: true }).jpeg().toBuffer();
+  const resized = await prepared
+    .resize(width, height, { fit: "inside", withoutEnlargement: true, kernel: "lanczos3" })
+    .png()
+    .toBuffer();
   const sized = await sharp(resized).metadata();
   const light = await pictureIsLight(resized);
   const mark = await sharp(overlay(sized.width ?? width, sized.height ?? height, light)).png().toBuffer();
 
   return sharp(resized)
     .composite([{ input: mark, blend: "over" }])
-    .jpeg({ quality: 82, mozjpeg: true })
+    .jpeg({ quality: 95, chromaSubsampling: "4:4:4", mozjpeg: true })
     .toBuffer();
 }

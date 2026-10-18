@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { headers } from "next/headers";
 import { Fredoka, Lilita_One } from "next/font/google";
 import { EnterAnimation } from "@/components/enter-animation";
 import { Footer } from "@/components/footer";
+import { ProposalReturn } from "@/components/proposal-return";
 import { ThemeBackground } from "@/components/theme-background";
 import { studio } from "@/lib/content";
 import "./globals.css";
@@ -61,6 +63,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             <EnterAnimation />
             <div id="content">{children}</div>
             <Footer />
+            <Suspense fallback={null}>
+              <ProposalReturn />
+            </Suspense>
           </>
         )}
       </body>

@@ -78,6 +78,26 @@ export function PhotoGrid({ images, variant = "thumbs" }: { images: Shot[]; vari
     );
   }
 
+  const captioned = images.some((image) => image.caption);
+
+  if (captioned) {
+    return (
+      <>
+        <div className="sow-shots">
+          {images.map((image) => (
+            <figure className="sow-shot" key={image.id}>
+              <button type="button" className="photo-thumb" onClick={() => show(image.src)}>
+                <img src={image.src} alt={image.caption || ""} draggable={false} />
+              </button>
+              {image.caption ? <figcaption>{image.caption}</figcaption> : null}
+            </figure>
+          ))}
+        </div>
+        {lightbox}
+      </>
+    );
+  }
+
   return (
     <>
       <div className="proposal-photos">

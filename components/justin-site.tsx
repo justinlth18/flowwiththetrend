@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import ElectricBorder from "@/components/electric-border";
-import { education, experience, justin, languages, skillGroups } from "@/lib/justin";
+import { education, experience, justin, languages, projects, skillGroups } from "@/lib/justin";
 
 const pages = [
   { id: "about", label: "About" },
@@ -455,6 +455,26 @@ function Experience({ ink }: { ink: boolean }) {
           </li>
         ))}
       </ol>
+      <h2>
+        <Tech text="On my own" on={ink} delay={0.45} />
+      </h2>
+      <ul className="study">
+        {projects.map((project, projectIndex) => (
+          <li key={project.href}>
+            <b>
+              <Tech text={project.when} on={ink} delay={0.5 + projectIndex * 0.08} />
+            </b>
+            <strong>
+              <a href={project.href} target="_blank" rel="noreferrer">
+                <Tech text={project.name} on={ink} mark delay={0.54 + projectIndex * 0.08} />
+              </a>
+            </strong>
+            <span className="credential">
+              <Tech text={project.detail} on={ink} delay={0.6 + projectIndex * 0.08} />
+            </span>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

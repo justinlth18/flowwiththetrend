@@ -12,7 +12,7 @@ const rajdhani = Rajdhani({
 export const metadata: Metadata = {
   title: { absolute: "Justin Looi Teng Hein" },
   description:
-    "Portfolio of Justin Looi Teng Hein, frontend developer and UI/UX designer in Petaling Jaya. CROSSUB contract, white-label React and Next.js, and a cybersecurity degree.",
+    "Portfolio of Justin Looi Teng Hein, frontend developer and UI/UX designer in Petaling Jaya. CROSSUB web, CROS Inspect and CROS Tenant for iOS and Android, and a cybersecurity degree.",
 };
 
 export const viewport: Viewport = {

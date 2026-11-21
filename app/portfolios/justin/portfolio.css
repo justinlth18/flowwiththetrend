@@ -321,6 +321,7 @@ ol > li, .study > li {
 }
 .study b { grid-area: when; }
 .study strong { grid-area: school; }
+.study strong a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .study .credential { grid-area: credential; display: block; }
 .margin b, .study b {
   display: inline;
